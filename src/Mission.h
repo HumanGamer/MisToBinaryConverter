@@ -35,9 +35,19 @@ struct Mission
         const char* sky;
         const char* clouds;
         U32 renderDistance;
-        bool hasAstrolabe;
     };
     Environment environment;
+
+    struct Shapes
+    {
+        const char* type;
+        const char* name;
+        Point position;
+        AngAxis rotation;
+        Point scale;
+    };
+    U32 numShapes;
+    Shapes** shapes;
 
     struct Item
     {
