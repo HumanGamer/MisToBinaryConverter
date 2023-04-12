@@ -1,6 +1,7 @@
 #include "mis_parser.h"
 #include <fstream>
 #include <MissionParser/Tokenizer.hpp>
+#include <MissionParser/Parser.hpp>
 
 bool parse_mis_file(const char* filename, Mission* mis_file)
 {
@@ -21,12 +22,17 @@ bool parse_mis_file(const char* filename, Mission* mis_file)
     MissionParser::Tokenizer tokenizer;
     auto tokens = tokenizer.parse(file_contents);
 
-    for (auto& token : tokens)
-    {
-        token.debugPrint();
-    }
+//    for (auto& token : tokens)
+//    {
+//        token.debugPrint();
+//    }
 
     delete[] file_contents;
+
+    MissionParser::Parser parser;
+    parser.parse(tokens);
+
+    parser.debugPrint();
 
     return true;
 }

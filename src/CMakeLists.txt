@@ -8,6 +8,9 @@ set(MAIN_SRC
     main.cpp
     mis_parser.cpp
     MissionParser/Tokenizer.cpp
+    MissionParser/Parser.cpp
+    MissionParser/Statement.cpp
+    MissionParser/ObjectDefinition.cpp
 
     # Headers
     platform/types.h
@@ -15,6 +18,10 @@ set(MAIN_SRC
     mis_parser.h
     MissionParser/Tokenizer.hpp
     MissionParser/TokenTypes.inc
+    MissionParser/Parser.hpp
+    MissionParser/Statement.hpp
+    MissionParser/StatementKinds.inc
+    MissionParser/ObjectDefinition.hpp
 )
 
 add_executable(MisToBinaryConverter ${MAIN_SRC})
