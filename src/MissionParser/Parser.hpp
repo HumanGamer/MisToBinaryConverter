@@ -18,11 +18,13 @@ namespace MissionParser
 
         void debugPrint() const;
 
+        std::vector<ObjectDefinition> &getObjects() { return mObjects; }
+
     private:
         std::vector<Token>::iterator mCurrentToken;
         std::vector<Token>::iterator mEndToken;
 
-        std::map<std::string, ObjectDefinition> mObjects;
+        std::vector<ObjectDefinition> mObjects;
 
         std::optional<ObjectDefinition> expectObject();
         std::optional<std::vector<Statement>> parseObjectBody(ObjectDefinition &def);

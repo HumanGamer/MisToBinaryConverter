@@ -14,7 +14,7 @@ namespace MissionParser
             std::optional<ObjectDefinition> obj = expectObject();
             if (obj.has_value())
             {
-                mObjects[obj->mName] = obj.value();
+                mObjects.push_back(obj.value());
             } else {
                 std::cerr << "Unknown identifier: " << mCurrentToken->mText << std::endl;
                 mCurrentToken++;
@@ -253,7 +253,7 @@ namespace MissionParser
     {
         for (auto obj : mObjects)
         {
-            obj.second.debugPrint(0);
+            obj.debugPrint(0);
         }
     }
 }
