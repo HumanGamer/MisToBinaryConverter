@@ -127,7 +127,7 @@ struct Mission
 
         bool inBounds;
     };
-    std::vector<BoundsTrigger*> boundsTriggers;
+    std::vector<BoundsTrigger> boundsTriggers;
 
     struct Checkpoint
     {
