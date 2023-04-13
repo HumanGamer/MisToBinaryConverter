@@ -22,6 +22,13 @@ struct Point
     F32 x;
     F32 y;
     F32 z;
+
+    Point::Point()
+    {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
 };
 
 struct AngAxis
@@ -30,4 +37,12 @@ struct AngAxis
     F32 y;
     F32 z;
     F32 angle;
+
+    AngAxis::AngAxis()
+    {
+        x = 1;
+        y = 0;
+        z = 0;
+        angle = 0;
+    }
 };

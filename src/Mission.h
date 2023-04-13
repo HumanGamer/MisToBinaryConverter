@@ -2,14 +2,15 @@
 
 #include <platform/types.h>
 #include <string>
+#include <vector>
 
 struct Mission
 {
     struct Info
     {
         std::string name;
+        bool nameLocalized;
         std::string description;
-        bool localized;
         std::string type;
         std::string artist;
         std::string guid;
@@ -29,18 +30,11 @@ struct Mission
         U32 numGems;
         U32 gemGroupRadius;
         U32 maxGemsPerGroup;
+        std::string sky;
     };
     Info info;
 
-    struct Environment
-    {
-        std::string sky;
-        std::string clouds;
-        U32 renderDistance;
-    };
-    Environment environment;
-
-    struct Shapes
+    struct Shape
     {
         std::string type;
         std::string name;
@@ -48,8 +42,7 @@ struct Mission
         AngAxis rotation;
         Point scale;
     };
-    U32 numShapes;
-    Shapes** shapes;
+    std::vector<Shape> shapes;
 
     struct Item
     {
@@ -60,8 +53,7 @@ struct Mission
         Point scale;
         bool rotate;
     };
-    U32 numItems;
-    Item** items;
+    std::vector<Item> items;
 
     struct Geometry
     {
@@ -74,8 +66,7 @@ struct Mission
         // TODO: For the new format we will change this to support being embedded in the file
         std::string path;
     };
-    U32 numGeometries;
-    Geometry** geometries;
+    std::vector<Geometry> geometries;
 
     struct MovingGeometry
     {
@@ -100,19 +91,20 @@ struct Mission
             U32 timeToNext;
             U32 smoothingType;
         };
-        U32 numKeyFrames;
-        KeyFrame** keyframes;
+        std::vector<KeyFrame> keyframes;
     };
-    U32 numMovingGeometries;
-    MovingGeometry** movingGeometries;
+    std::vector<MovingGeometry> movingGeometries;
 
     struct SpawnPoint
     {
+        std::string className;
+        std::string type;
+        std::string name;
         Point position;
         AngAxis rotation;
+        Point scale;
     };
-    U32 numSpawnPoints;
-    SpawnPoint** spawnPoints;
+    std::vector<SpawnPoint> spawnPoints;
 
     struct HelpTrigger
     {
@@ -123,8 +115,7 @@ struct Mission
         std::string msg;
         bool localized;
     };
-    U32 numHelpTriggers;
-    HelpTrigger** helpTriggers;
+    std::vector<HelpTrigger> helpTriggers;
 
     struct BoundsTrigger
     {
@@ -134,8 +125,7 @@ struct Mission
 
         bool inBounds;
     };
-    U32 numBoundsTriggers;
-    BoundsTrigger** boundsTriggers;
+    std::vector<BoundsTrigger*> boundsTriggers;
 
     struct Checkpoint
     {
@@ -152,8 +142,7 @@ struct Mission
         };
         Trigger trigger;
     };
-    U32 numCheckpoints;
-    Checkpoint** checkpoints;
+    std::vector<Checkpoint> checkpoints;
 
     struct PreviewCamera
     {
