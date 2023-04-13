@@ -7,10 +7,10 @@
 #include <MissionParser/Parser.hpp>
 #include <MissionParser/VariableMap.hpp>
 
-#define GET_VAR_MAP(object, onFail) \
+#define GET_VAR_MAP(object) \
     MissionParser::VariableMap variables; \
     if (!object.getVariableMap(&variables)) \
-        onFail
+        return false
 
 bool parse_mission(const char* filename, std::vector<MissionParser::ObjectDefinition>* const objects)
 {
@@ -50,7 +50,7 @@ bool parse_mission(const char* filename, std::vector<MissionParser::ObjectDefini
 
 bool processMissionInfo(const MissionParser::ObjectDefinition& object, Mission* mission)
 {
-    GET_VAR_MAP(object, return false);
+    GET_VAR_MAP(object);
 
     mission->info.name = variables.getString("name");
     mission->info.description = variables.getString("desc");
@@ -105,7 +105,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "Sky"))
             {
-                GET_VAR_MAP(child, return false);
+                GET_VAR_MAP(child);
                 mission->info.sky = variables.getString("materialList");
                 if (!mission->info.sky.empty())
                 {
@@ -119,7 +119,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "StaticShape"))
             {
-                GET_VAR_MAP(child, return false);
+                GET_VAR_MAP(child);
                 Mission::Shape shape;
                 shape.type = variables.getString("dataBlock");
                 shape.name = child.mName;
@@ -132,7 +132,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "InteriorInstance"))
             {
-                GET_VAR_MAP(child, return false);
+                GET_VAR_MAP(child);
                 Mission::Geometry geometry;
                 geometry.type = "Interior";
                 geometry.name = child.mName;
@@ -147,7 +147,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "Item"))
             {
-                GET_VAR_MAP(child, return false);
+                GET_VAR_MAP(child);
                 Mission::Item item;
                 item.name = child.mName;
                 item.position = variables.getPoint("position");
@@ -166,7 +166,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
             {
                 for (auto& spawnPoint : child.mChildren)
                 {
-                    GET_VAR_MAP(spawnPoint, return false);
+                    GET_VAR_MAP(spawnPoint);
                     Mission::SpawnPoint point;
                     point.name = spawnPoint.mName;
                     point.position = variables.getPoint("position");
@@ -191,7 +191,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "SpawnSphere"))
             {
-                GET_VAR_MAP(child, return false);
+                GET_VAR_MAP(child);
                 if (variables.getString("dataBlock") != "CameraSpawnSphereMarker")
                 {
                     std::cerr << "Unknown SpawnSphere object found" << std::endl;
