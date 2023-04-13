@@ -79,9 +79,31 @@ void Mission::debugPrint()
         std::cout << ")" << std::endl;
     }
 
-    // TODO: Help Triggers
+    std::cout << "Help Triggers: " << std::endl;
+    for (auto& trigger : mission->helpTriggers)
+    {
+        std::cout << "Help Trigger" << std::endl;
+        std::cout << "(" << std::endl;
+        std::cout << "\tHelp Trigger position: " << trigger.position.x << ", " << trigger.position.y << ", " << trigger.position.z << std::endl;
+        std::cout << "\tHelp Trigger rotation: " << trigger.rotation.x << ", " << trigger.rotation.y << ", " << trigger.rotation.z << ", " << trigger.rotation.angle << std::endl;
+        std::cout << "\tHelp Trigger scale: " << trigger.scale.x << ", " << trigger.scale.y << ", " << trigger.scale.z << std::endl;
+        std::cout << "\tHelp Trigger Polyhedron: " << trigger.polyhedron << std::endl;
+        std::cout << "\tHelp Trigger message: " << trigger.msg << std::endl;
+        std::cout << ")" << std::endl;
+    }
 
-    // TODO: Bounds Triggers
+    std::cout << "Bounds Triggers: " << std::endl;
+    for (auto& trigger : mission->boundsTriggers)
+    {
+        std::cout << "Bounds Trigger" << std::endl;
+        std::cout << "(" << std::endl;
+        std::cout << "\tBounds Trigger position: " << trigger.position.x << ", " << trigger.position.y << ", " << trigger.position.z << std::endl;
+        std::cout << "\tBounds Trigger rotation: " << trigger.rotation.x << ", " << trigger.rotation.y << ", " << trigger.rotation.z << ", " << trigger.rotation.angle << std::endl;
+        std::cout << "\tBounds Trigger scale: " << trigger.scale.x << ", " << trigger.scale.y << ", " << trigger.scale.z << std::endl;
+        std::cout << "\tBounds Trigger Polyhedron: " << trigger.polyhedron << std::endl;
+        std::cout << "\tBounds Trigger InBounds: " << (trigger.inBounds ? "true" : "false") << std::endl;
+        std::cout << ")" << std::endl;
+    }
 
     // TODO: Checkpoints
 
