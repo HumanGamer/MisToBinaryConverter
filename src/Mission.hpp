@@ -163,6 +163,15 @@ struct Mission
     };
     std::vector<Checkpoint> checkpoints;
 
+    struct GemSpawn
+    {
+        std::string type;
+        Point position;
+        AngAxis rotation;
+        Point scale;
+    };
+    std::vector<GemSpawn> gemSpawns;
+
     struct PreviewCamera
     {
         Point position;

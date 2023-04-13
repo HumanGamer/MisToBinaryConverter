@@ -177,6 +177,27 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 continue;
             }
 
+            if (equalsIgnoreCase(child.mClassName, "SimGroup") && equalsIgnoreCase(child.mName, "GemSpawns"))
+            {
+                for (auto& gemSpawn : child.mChildren)
+                {
+                    if (!equalsIgnoreCase(gemSpawn.mClassName, "SpawnSphere"))
+                        continue;
+                    GET_VAR_MAP(gemSpawn);
+                    if (!equalsIgnoreCase(variables.getString("dataBlock"), "GemSpawnSphereMarker"))
+                        continue;
+                    Mission::GemSpawn spawn;
+                    spawn.position = variables.getPoint("position");
+                    spawn.rotation = variables.getAngAxis("rotation");
+                    spawn.scale = variables.getPoint("scale");
+                    spawn.type = variables.getString("gemDataBlock");
+                    if (spawn.type.empty())
+                        spawn.type = "GemItem";
+                    mission->gemSpawns.push_back(spawn);
+                }
+                continue;
+            }
+
             if (equalsIgnoreCase(child.mClassName, "SimGroup"))
             {
                 Mission::MovingGeometry movingGeometry;
@@ -344,8 +365,6 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
                 continue;
             }
-
-            // TODO: Multiplayer Gem Spawns
 
             if (equalsIgnoreCase(child.mClassName, "SpawnSphere"))
             {

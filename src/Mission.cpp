@@ -169,7 +169,17 @@ void Mission::debugPrint()
         std::cout << ")" << std::endl;
     }
 
-    // TODO: Multiplayer Gem Spawns
+    std::cout << "Gem Spawns: " << std::endl;
+    for (auto& gemSpawn : mission->gemSpawns)
+    {
+        std::cout << "Gem Spawn" << std::endl;
+        std::cout << "(" << std::endl;
+        std::cout << "\tGem Spawn type: " << gemSpawn.type << std::endl;
+        std::cout << "\tGem Spawn position: " << gemSpawn.position.x << ", " << gemSpawn.position.y << ", " << gemSpawn.position.z << std::endl;
+        std::cout << "\tGem Spawn rotation: " << gemSpawn.rotation.x << ", " << gemSpawn.rotation.y << ", " << gemSpawn.rotation.z << ", " << gemSpawn.rotation.angle << std::endl;
+        std::cout << "\tGem Spawn scale: " << gemSpawn.scale.x << ", " << gemSpawn.scale.y << ", " << gemSpawn.scale.z << std::endl;
+        std::cout << ")" << std::endl;
+    }
 
     std::cout << "Mission Preview Camera: " << std::endl;
     std::cout << "(" << std::endl;
