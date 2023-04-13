@@ -179,8 +179,6 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 continue;
             }
 
-
-
             // TODO: Help Triggers
 
             // TODO: Bounds Triggers

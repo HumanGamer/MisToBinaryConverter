@@ -153,4 +153,6 @@ struct Mission
         AngAxis rotation;
     };
     PreviewCamera previewCamera;
+
+    void debugPrint();
 };
