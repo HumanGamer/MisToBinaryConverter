@@ -1,9 +1,16 @@
 #include "MissionLoaderText.hpp"
+#include "Util.hpp"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <MissionParser/Tokenizer.hpp>
 #include <MissionParser/Parser.hpp>
+#include <MissionParser/VariableMap.hpp>
+
+#define GET_VAR_MAP(object, onFail) \
+    MissionParser::VariableMap variables; \
+    if (!object.getVariableMap(&variables)) \
+        onFail
 
 bool parse_mission(const char* filename, std::vector<MissionParser::ObjectDefinition>* const objects)
 {
@@ -41,123 +48,38 @@ bool parse_mission(const char* filename, std::vector<MissionParser::ObjectDefini
     return true;
 }
 
-bool getVariables(const MissionParser::ObjectDefinition& object, std::map<std::string, std::string>* variables)
-{
-    for (auto& statement : object.mStatements)
-    {
-        std::string name = statement.mName;
-        if (statement.mParameters.size() != 1)
-        {
-            std::string s = "Internal error, the variable has more than one value";
-            std::cerr << s << std::endl;
-            //throw std::runtime_error(s);
-            return false;
-        }
-        std::string value = statement.mParameters[0].mName;
-        (*variables)[name] = value;
-    }
-    return true;
-}
-
-std::string getVariableValue(std::map<std::string, std::string> variables, const char* name)
-{
-    auto it = variables.find(name);
-    if (it == variables.end())
-        return "";
-    return it->second;
-}
-
-Point getPointVariableValue(std::map<std::string, std::string> variables, const char* name)
-{
-    auto it = variables.find(name);
-    if (it == variables.end())
-        return Point();
-
-    Point p;
-    sscanf_s(it->second.c_str(), "%f %f %f", &p.x, &p.y, &p.z);
-
-    return p;
-}
-
-AngAxis getAngAxisVariableValue(std::map<std::string, std::string> variables, const char* name)
-{
-    auto it = variables.find(name);
-    if (it == variables.end())
-        return AngAxis();
-
-    AngAxis a;
-    sscanf_s(it->second.c_str(), "%f %f %f %f", &a.x, &a.y, &a.z, &a.angle);
-
-    return a;
-}
-
-bool getBoolVariableValue(std::map<std::string, std::string> variables, const char* name)
-{
-    auto it = variables.find(name);
-    if (it == variables.end())
-        return "";
-    if (it->second == "true" || it->second == "1")
-        return true;
-    return false;
-}
-
-U32 getIntVariableValue(std::map<std::string, std::string> variables, const char* name)
-{
-    auto it = variables.find(name);
-    if (it == variables.end())
-        return 0;
-    return std::stoi(it->second);
-}
-
-bool equalsIgnoreCase(const std::string s1, const std::string s2)
-{
-    if (s1.length() != s2.length())
-        return false;
-
-    std::string s1_lower = s1;
-    std::string s2_lower = s2;
-    std::transform(s1_lower.begin(), s1_lower.end(), s1_lower.begin(),
-                   [](unsigned char c){ return std::tolower(c); });
-    std::transform(s2_lower.begin(), s2_lower.end(), s2_lower.begin(),
-                   [](unsigned char c){ return std::tolower(c); });
-
-    return s1_lower == s2_lower;
-}
-
 bool processMissionInfo(const MissionParser::ObjectDefinition& object, Mission* mission)
 {
-    std::map<std::string, std::string> variables;
-    if (!getVariables(object, &variables))
-        return false;
+    GET_VAR_MAP(object, return false);
 
-    mission->info.name = getVariableValue(variables, "name");
-    mission->info.description = getVariableValue(variables, "desc");
-    mission->info.type = getVariableValue(variables, "type");
-    mission->info.artist = getVariableValue(variables, "artist");
-    mission->info.startHelpText = getVariableValue(variables, "startHelpText");
-    mission->info.guid = getVariableValue(variables, "guid");
-    mission->info.levelIndex = getIntVariableValue(variables, "level");
-    mission->info.includeInLevelList = getBoolVariableValue(variables, "include");
-    std::string gameMode = getVariableValue(variables, "gameMode");
+    mission->info.name = variables.getString("name");
+    mission->info.description = variables.getString("desc");
+    mission->info.type = variables.getString("type");
+    mission->info.artist = variables.getString("artist");
+    mission->info.startHelpText = variables.getString("startHelpText");
+    mission->info.guid = variables.getString("guid");
+    mission->info.levelIndex = variables.getInt("level");
+    mission->info.includeInLevelList = variables.getBool("include");
+    std::string gameMode = variables.getString("gameMode");
     if (gameMode.empty())
         gameMode = "race";
     mission->info.gameMode = gameMode;
-    mission->info.gameType = getVariableValue(variables, "gameType");
+    mission->info.gameType = variables.getString("gameType");
     if (equalsIgnoreCase(gameMode, "scrum"))
     {
-        mission->info.timeLimit = getIntVariableValue(variables, "time");
-        mission->info.parGoal.score = getIntVariableValue(variables, "score");
-        mission->info.goldGoal.score = getIntVariableValue(variables, "goldScore");
+        mission->info.timeLimit = variables.getInt("time");
+        mission->info.parGoal.score = variables.getInt("score");
+        mission->info.goldGoal.score = variables.getInt("goldScore");
     } else {
         mission->info.timeLimit = 0;
-        mission->info.parGoal.time = getIntVariableValue(variables, "time");
-        mission->info.goldGoal.time = getIntVariableValue(variables, "goldTime");
+        mission->info.parGoal.time = variables.getInt("time");
+        mission->info.goldGoal.time = variables.getInt("goldTime");
     }
 
-    mission->info.difficulty = getIntVariableValue(variables, "difficulty");
-    mission->info.numGems = getIntVariableValue(variables, "numGems");
-    mission->info.gemGroupRadius = getIntVariableValue(variables, "gemGroupRadius");
-    mission->info.maxGemsPerGroup = getIntVariableValue(variables, "maxGemsPerGroup");
+    mission->info.difficulty = variables.getInt("difficulty");
+    mission->info.numGems = variables.getInt("numGems");
+    mission->info.gemGroupRadius = variables.getInt("gemGroupRadius");
+    mission->info.maxGemsPerGroup = variables.getInt("maxGemsPerGroup");
 
     return true;
 }
@@ -183,11 +105,9 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "Sky"))
             {
-                std::map<std::string, std::string> variables;
-                if (!getVariables(child, &variables))
-                    return false;
-                mission->info.sky = getVariableValue(variables, "materialList");
-                if (mission->info.sky != "")
+                GET_VAR_MAP(child, return false);
+                mission->info.sky = variables.getString("materialList");
+                if (!mission->info.sky.empty())
                 {
                     // strip to just file name
                     size_t pos = mission->info.sky.find_last_of('/');
@@ -199,32 +119,27 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "StaticShape"))
             {
-                std::map<std::string, std::string> variables;
-                if (!getVariables(child, &variables))
-                    return false;
+                GET_VAR_MAP(child, return false);
                 Mission::Shape shape;
-                shape.type = getVariableValue(variables, "dataBlock");
+                shape.type = variables.getString("dataBlock");
                 shape.name = child.mName;
-                shape.position = getPointVariableValue(variables, "position");
-                shape.rotation = getAngAxisVariableValue(variables, "rotation");
-                shape.scale = getPointVariableValue(variables, "scale");
+                shape.position = variables.getPoint("position");
+                shape.rotation = variables.getAngAxis("rotation");
+                shape.scale = variables.getPoint("scale");
                 mission->shapes.push_back(shape);
                 continue;
             }
 
             if (equalsIgnoreCase(child.mClassName, "InteriorInstance"))
             {
-                std::map<std::string, std::string> variables;
-                if (!getVariables(child, &variables))
-                    return false;
-
+                GET_VAR_MAP(child, return false);
                 Mission::Geometry geometry;
                 geometry.type = "Interior";
                 geometry.name = child.mName;
-                geometry.position = getPointVariableValue(variables, "position");
-                geometry.rotation = getAngAxisVariableValue(variables, "rotation");
-                geometry.scale = getPointVariableValue(variables, "scale");
-                geometry.path = getVariableValue(variables, "interiorFile");
+                geometry.position = variables.getPoint("position");
+                geometry.rotation = variables.getAngAxis("rotation");
+                geometry.scale = variables.getPoint("scale");
+                geometry.path = variables.getString("interiorFile");
                 mission->geometries.push_back(geometry);
 
                 continue;
@@ -232,17 +147,14 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "Item"))
             {
-                std::map<std::string, std::string> variables;
-                if (!getVariables(child, &variables))
-                    return false;
-
+                GET_VAR_MAP(child, return false);
                 Mission::Item item;
                 item.name = child.mName;
-                item.position = getPointVariableValue(variables, "position");
-                item.rotation = getAngAxisVariableValue(variables, "rotation");
-                item.scale = getPointVariableValue(variables, "scale");
-                item.type = getVariableValue(variables, "dataBlock");
-                item.rotate = getBoolVariableValue(variables, "rotate");
+                item.position = variables.getPoint("position");
+                item.rotation = variables.getAngAxis("rotation");
+                item.scale = variables.getPoint("scale");
+                item.type = variables.getString("dataBlock");
+                item.rotate = variables.getBool("rotate");
                 mission->items.push_back(item);
 
                 continue;
@@ -254,16 +166,13 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
             {
                 for (auto& spawnPoint : child.mChildren)
                 {
-                    std::map<std::string, std::string> variables;
-                    if (!getVariables(spawnPoint, &variables))
-                        return false;
-
+                    GET_VAR_MAP(spawnPoint, return false);
                     Mission::SpawnPoint point;
                     point.name = spawnPoint.mName;
-                    point.position = getPointVariableValue(variables, "position");
-                    point.rotation = getAngAxisVariableValue(variables, "rotation");
-                    point.scale = getPointVariableValue(variables, "scale");
-                    point.type = getVariableValue(variables, "dataBlock");
+                    point.position = variables.getPoint("position");
+                    point.rotation = variables.getAngAxis("rotation");
+                    point.scale = variables.getPoint("scale");
+                    point.type = variables.getString("dataBlock");
                     point.className = spawnPoint.mClassName;
                     mission->spawnPoints.push_back(point);
                 }
@@ -282,18 +191,15 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "SpawnSphere"))
             {
-                std::map<std::string, std::string> variables;
-                if (!getVariables(child, &variables))
-                    return false;
-
-                if (getVariableValue(variables, "dataBlock") != "CameraSpawnSphereMarker")
+                GET_VAR_MAP(child, return false);
+                if (variables.getString("dataBlock") != "CameraSpawnSphereMarker")
                 {
                     std::cerr << "Unknown SpawnSphere object found" << std::endl;
                     continue;
                 }
 
-                mission->previewCamera.position = getPointVariableValue(variables, "position");
-                mission->previewCamera.rotation = getAngAxisVariableValue(variables, "rotation");
+                mission->previewCamera.position = variables.getPoint("position");
+                mission->previewCamera.rotation = variables.getAngAxis("rotation");
                 continue;
             }
         }
