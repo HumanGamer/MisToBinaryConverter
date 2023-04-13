@@ -105,7 +105,24 @@ void Mission::debugPrint()
         std::cout << ")" << std::endl;
     }
 
-    // TODO: Checkpoints
+    std::cout << "Checkpoints: " << std::endl;
+    for (auto& checkpoint : mission->checkpoints)
+    {
+        std::cout << "Checkpoint" << std::endl;
+        std::cout << "(" << std::endl;
+        std::cout << "\tCheckpoint position: " << checkpoint.position.x << ", " << checkpoint.position.y << ", " << checkpoint.position.z << std::endl;
+        std::cout << "\tCheckpoint rotation: " << checkpoint.rotation.x << ", " << checkpoint.rotation.y << ", " << checkpoint.rotation.z << ", " << checkpoint.rotation.angle << std::endl;
+        std::cout << "\tCheckpoint scale: " << checkpoint.scale.x << ", " << checkpoint.scale.y << ", " << checkpoint.scale.z << std::endl;
+        std::cout << "\tCheckpoint sequence: " << checkpoint.sequence << std::endl;
+        std::cout << "\tTrigger:" << std::endl;
+        std::cout << "\t(" << std::endl;
+        std::cout << "\t\tCheckpoint Trigger position: " << checkpoint.trigger.position.x << ", " << checkpoint.trigger.position.y << ", " << checkpoint.trigger.position.z << std::endl;
+        std::cout << "\t\tCheckpoint Trigger rotation: " << checkpoint.trigger.rotation.x << ", " << checkpoint.trigger.rotation.y << ", " << checkpoint.trigger.rotation.z << ", " << checkpoint.trigger.rotation.angle << std::endl;
+        std::cout << "\t\tCheckpoint Trigger scale: " << checkpoint.trigger.scale.x << ", " << checkpoint.trigger.scale.y << ", " << checkpoint.trigger.scale.z << std::endl;
+        std::cout << "\t\tCheckpoint Trigger polyhedron: " << checkpoint.trigger.polyhedron << std::endl;
+        std::cout << "\t)" << std::endl;
+        std::cout << ")" << std::endl;
+    }
 
     // TODO: Multiplayer Gem Spawns
 

@@ -179,9 +179,53 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 continue;
             }
 
-            // TODO: Help Triggers
+            if (equalsIgnoreCase(child.mClassName, "SimGroup"))
+            {
+                Mission::Checkpoint checkpoint;
+                bool isCheckpoint = false;
+                for (auto& obj : child.mChildren)
+                {
+                    if (obj.mClassName == "StaticShape")
+                    {
+                        GET_VAR_MAP(obj);
+                        if (equalsIgnoreCase(variables.getString("dataBlock"), "checkPointShape"))
+                        {
+                            isCheckpoint = true;
 
-            // TODO: Bounds Triggers
+                            checkpoint.position = variables.getPoint("position");
+                            checkpoint.rotation = variables.getAngAxis("rotation");
+                            checkpoint.scale = variables.getPoint("scale");
+
+                            break;
+                        }
+                    }
+                }
+
+                if (isCheckpoint)
+                {
+                    for (auto& obj : child.mChildren)
+                    {
+                        if (obj.mClassName == "Trigger")
+                        {
+                            GET_VAR_MAP(obj);
+                            if (equalsIgnoreCase(variables.getString("dataBlock"), "CheckPointTrigger"))
+                            {
+                                Mission::Checkpoint::Trigger trigger;
+                                trigger.position = variables.getPoint("position");
+                                trigger.rotation = variables.getAngAxis("rotation");
+                                trigger.scale = variables.getPoint("scale");
+                                trigger.polyhedron = variables.getString("polyhedron");
+                                checkpoint.trigger = trigger;
+                                checkpoint.sequence = variables.getInt("sequence");
+                                mission->checkpoints.push_back(checkpoint);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                continue;
+            }
 
             if (equalsIgnoreCase(child.mClassName, "Trigger"))
             {
