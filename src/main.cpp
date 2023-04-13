@@ -95,11 +95,13 @@ int main(int argc, const char** argv)
         std::cout << ")" << std::endl;
     }
 
-    // TODO: Help Trigger
+    // TODO: Help Triggers
 
-    // TODO: Bounds Trigger
+    // TODO: Bounds Triggers
 
-    // TODO: Checkpoint
+    // TODO: Checkpoints
+
+    // TODO: Multiplayer Gem Spawns
 
     std::cout << "Mission Preview Camera: " << std::endl;
     std::cout << "(" << std::endl;

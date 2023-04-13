@@ -273,11 +273,13 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 continue;
             }
 
-            // TODO: Help Trigger
+            // TODO: Help Triggers
 
-            // TODO: Bounds Trigger
+            // TODO: Bounds Triggers
 
-            // TODO: Checkpoint
+            // TODO: Checkpoints
+
+            // TODO: Multiplayer Gem Spawns
 
             if (equalsIgnoreCase(child.mClassName, "SpawnSphere"))
             {
