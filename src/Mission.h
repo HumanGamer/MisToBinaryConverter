@@ -1,20 +1,22 @@
 #pragma once
 
 #include <platform/types.h>
+#include <string>
 
 struct Mission
 {
     struct Info
     {
-        const char* name;
-        const char* description;
+        std::string name;
+        std::string description;
         bool localized;
-        const char* artist;
-        const char* guid;
+        std::string type;
+        std::string artist;
+        std::string guid;
         U32 levelIndex;
         bool includeInLevelList;
-        const char* gameMode;
-        const char* gameType;
+        std::string gameMode;
+        std::string gameType;
         U32 timeLimit;
         union Goal
         {
@@ -32,16 +34,16 @@ struct Mission
 
     struct Environment
     {
-        const char* sky;
-        const char* clouds;
+        std::string sky;
+        std::string clouds;
         U32 renderDistance;
     };
     Environment environment;
 
     struct Shapes
     {
-        const char* type;
-        const char* name;
+        std::string type;
+        std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
@@ -51,8 +53,8 @@ struct Mission
 
     struct Item
     {
-        const char* type;
-        const char* name;
+        std::string type;
+        std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
@@ -63,23 +65,23 @@ struct Mission
 
     struct Geometry
     {
-        const char* type;
-        const char* name;
+        std::string type;
+        std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
 
         // TODO: For the new format we will change this to support being embedded in the file
-        const char* path;
+        std::string path;
     };
     U32 numGeometries;
     Geometry** geometries;
 
     struct MovingGeometry
     {
-        const char* type;
-        const char* subtype;
-        const char* name;
+        std::string type;
+        std::string subtype;
+        std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
@@ -87,7 +89,7 @@ struct Mission
         bool looping;
 
         // TODO: For the new format we will change this to support being embedded in the file
-        const char* path;
+        std::string path;
         U32 indexInFile;
 
         struct KeyFrame
@@ -118,7 +120,7 @@ struct Mission
         AngAxis rotation;
         Point scale;
 
-        const char* msg;
+        std::string msg;
         bool localized;
     };
     U32 numHelpTriggers;

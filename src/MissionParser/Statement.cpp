@@ -3,7 +3,7 @@
 
 namespace MissionParser
 {
-    void Statement::debugPrint(size_t indent)
+    void Statement::debugPrint(size_t indent) const
     {
         std::cout << std::string(indent, '\t') << sStatementKindNames[U32(mKind)] << " ";
         std::cout << mName << std::endl;

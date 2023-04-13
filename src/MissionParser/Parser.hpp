@@ -18,7 +18,7 @@ namespace MissionParser
 
         void debugPrint() const;
 
-        std::vector<ObjectDefinition> &getObjects() { return mObjects; }
+        const std::vector<ObjectDefinition> &getObjects() const { return mObjects; }
 
     private:
         std::vector<Token>::iterator mCurrentToken;

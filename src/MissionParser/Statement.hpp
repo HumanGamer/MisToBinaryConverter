@@ -29,7 +29,7 @@ namespace MissionParser
         std::vector<Statement> mParameters;
         StatementKind mKind{StatementKind::UNKNOWN};
 
-        void debugPrint(size_t indent);
+        void debugPrint(size_t indent) const;
     };
     
 }
