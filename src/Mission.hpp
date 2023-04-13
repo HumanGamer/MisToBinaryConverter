@@ -18,7 +18,7 @@ struct Mission
         U32 levelIndex;
         bool includeInLevelList;
         std::string gameMode;
-        std::string gameType;
+        bool multiplayer;
         U32 timeLimit;
         union Goal
         {
@@ -38,7 +38,7 @@ struct Mission
     struct Shape
     {
         std::string type;
-        std::string name;
+        //std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
@@ -48,7 +48,7 @@ struct Mission
     struct Item
     {
         std::string type;
-        std::string name;
+        //std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
@@ -59,7 +59,7 @@ struct Mission
     struct Geometry
     {
         std::string type;
-        std::string name;
+        //std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
@@ -73,7 +73,7 @@ struct Mission
     {
         std::string type;
         std::string subtype;
-        std::string name;
+        //std::string name;
         Point position;
         AngAxis rotation;
         Point scale;
@@ -116,7 +116,7 @@ struct Mission
     {
         std::string className;
         std::string type;
-        std::string name;
+        //std::string name;
         Point position;
         AngAxis rotation;
         Point scale;

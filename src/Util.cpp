@@ -15,3 +15,21 @@ bool equalsIgnoreCase(const std::string& s1, const std::string& s2)
 
     return s1_lower == s2_lower;
 }
+
+std::string formatTime(U32 milliseconds)
+{
+    F32 hundredths = floor((milliseconds % 1000) / 10.0f);
+    F32 totalSeconds = floor(milliseconds / 1000.0f);
+    F32 seconds = (U32)totalSeconds % 60;
+    F32 minutes = (totalSeconds - seconds) / 60.0f;
+    F32 secondsOne = (U32)seconds % 10;
+    F32 secondsTen = (seconds - secondsOne) / 10.0f;
+    F32 minutesOne = (U32)minutes % 10;
+    F32 minutesTen = (minutes - minutesOne) / 10.0f;
+    F32 hundredthsOne = (U32)hundredths % 10;
+    F32 hundredthsTen = (hundredths - hundredthsOne) / 10.0f;
+
+    return std::to_string((U32)minutesTen) + std::to_string((U32)minutesOne) + ":" +
+           std::to_string((U32)secondsTen) + std::to_string((U32)secondsOne) + "." +
+           std::to_string((U32)hundredthsTen) + std::to_string((U32)hundredthsOne);
+}

@@ -56,6 +56,8 @@ bool processMissionInfo(const MissionParser::ObjectDefinition& object, Mission* 
     mission->info.description = variables.getString("desc");
     mission->info.type = variables.getString("type");
     mission->info.artist = variables.getString("artist");
+    if (mission->info.artist.empty())
+        mission->info.artist = "Unknown";
     mission->info.startHelpText = variables.getString("startHelpText");
     mission->info.guid = variables.getString("guid");
     mission->info.levelIndex = variables.getInt("level");
@@ -63,9 +65,11 @@ bool processMissionInfo(const MissionParser::ObjectDefinition& object, Mission* 
     std::string gameMode = variables.getString("gameMode");
     if (gameMode.empty())
         gameMode = "race";
-    mission->info.gameMode = gameMode;
-    mission->info.gameType = variables.getString("gameType");
     if (equalsIgnoreCase(gameMode, "scrum"))
+        gameMode = "hunt";
+    mission->info.gameMode = gameMode;
+    mission->info.multiplayer = equalsIgnoreCase(variables.getString("gameType"), "multiplayer");
+    if (equalsIgnoreCase(gameMode, "hunt"))
     {
         mission->info.timeLimit = variables.getInt("time");
         mission->info.parGoal.score = variables.getInt("score");
@@ -113,6 +117,15 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                     size_t pos = mission->info.sky.find_last_of('/');
                     if (pos != std::string::npos)
                         mission->info.sky = mission->info.sky.substr(pos + 1);
+
+                    // strip extension
+                    pos = mission->info.sky.find_last_of('.');
+                    if (pos != std::string::npos)
+                        mission->info.sky = mission->info.sky.substr(0, pos);
+
+                    // strip sky_ prefix
+                    if (mission->info.sky.find("sky_") == 0)
+                        mission->info.sky = mission->info.sky.substr(4);
                 }
                 continue;
             }
@@ -122,7 +135,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 GET_VAR_MAP(child);
                 Mission::Shape shape;
                 shape.type = variables.getString("dataBlock");
-                shape.name = child.mName;
+                //shape.name = child.mName;
                 shape.position = variables.getPoint("position");
                 shape.rotation = variables.getAngAxis("rotation");
                 shape.scale = variables.getPoint("scale");
@@ -135,7 +148,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 GET_VAR_MAP(child);
                 Mission::Geometry geometry;
                 geometry.type = "Interior";
-                geometry.name = child.mName;
+                //geometry.name = child.mName;
                 geometry.position = variables.getPoint("position");
                 geometry.rotation = variables.getAngAxis("rotation");
                 geometry.scale = variables.getPoint("scale");
@@ -149,7 +162,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
             {
                 GET_VAR_MAP(child);
                 Mission::Item item;
-                item.name = child.mName;
+                //item.name = child.mName;
                 item.position = variables.getPoint("position");
                 item.rotation = variables.getAngAxis("rotation");
                 item.scale = variables.getPoint("scale");
@@ -166,7 +179,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 {
                     GET_VAR_MAP(spawnPoint);
                     Mission::SpawnPoint point;
-                    point.name = spawnPoint.mName;
+                    //point.name = spawnPoint.mName;
                     point.position = variables.getPoint("position");
                     point.rotation = variables.getAngAxis("rotation");
                     point.scale = variables.getPoint("scale");
@@ -210,7 +223,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                         GET_VAR_MAP(obj);
                         isMovingGeometry = true;
 
-                        movingGeometry.name = obj.mName;
+                        //movingGeometry.name = obj.mName;
                         movingGeometry.type = "Interior";
                         movingGeometry.subtype = variables.getString("dataBlock");
                         movingGeometry.position = variables.getPoint("position");

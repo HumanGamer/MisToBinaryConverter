@@ -17,6 +17,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const LocalizedString& s);
 
     std::string ToString() const;
+    bool Empty() const { return mValue.empty(); }
 
 private:
     void DetectIfLocalized();
