@@ -27,7 +27,7 @@ namespace MissionParser
         }
     }
 
-    bool ObjectDefinition::getVariables(std::map<std::string, std::string>* variables) const
+    bool ObjectDefinition::getVariables(CaseInsensitiveMap<std::string>* variables) const
     {
         for (auto& statement : mStatements)
         {
@@ -47,7 +47,7 @@ namespace MissionParser
 
     bool ObjectDefinition::getVariableMap(MissionParser::VariableMap *variables) const
     {
-        std::map<std::string, std::string> vars;
+        CaseInsensitiveMap<std::string> vars;
         if (!getVariables(&vars))
             return false;
 

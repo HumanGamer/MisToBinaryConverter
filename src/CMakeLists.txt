@@ -29,6 +29,7 @@ set(MAIN_SRC
     MissionParser/StatementKinds.inc
     MissionParser/ObjectDefinition.hpp
     MissionParser/VariableMap.hpp
+    CaseInsensitiveMap.hpp
 )
 
 add_executable(MisToBinaryConverter ${MAIN_SRC})

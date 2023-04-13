@@ -1,20 +1,22 @@
 #pragma once
 
 #include <platform/types.h>
+#include <CaseInsensitiveMap.hpp>
 #include <string>
 #include <map>
 #include "ObjectDefinition.hpp"
 
 namespace MissionParser
 {
+
     class VariableMap
     {
     public:
         VariableMap();
-        explicit VariableMap(std::map<std::string, std::string> variables);
+        explicit VariableMap(CaseInsensitiveMap<std::string> variables);
         virtual ~VariableMap();
 
-        void setVariableMap(std::map<std::string, std::string> variables);
+        void setVariableMap(CaseInsensitiveMap<std::string> variables);
 
         bool containsVariable(const std::string& name);
 
@@ -25,6 +27,6 @@ namespace MissionParser
         U32 getInt(const std::string& name);
 
     private:
-        std::map<std::string, std::string> mVariables;
+        CaseInsensitiveMap<std::string> mVariables;
     };
 }

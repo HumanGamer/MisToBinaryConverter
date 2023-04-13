@@ -14,14 +14,14 @@ namespace MissionParser
 
     VariableMap::VariableMap() = default;
 
-    VariableMap::VariableMap(std::map<std::string, std::string> variables)
+    VariableMap::VariableMap(CaseInsensitiveMap<std::string> variables)
     {
         setVariableMap(std::move(variables));
     }
 
     VariableMap::~VariableMap() = default;
 
-    void VariableMap::setVariableMap(std::map<std::string, std::string> variables)
+    void VariableMap::setVariableMap(CaseInsensitiveMap<std::string> variables)
     {
         mVariables = std::move(variables);
     }

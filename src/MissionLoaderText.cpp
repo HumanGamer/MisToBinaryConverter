@@ -183,7 +183,48 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             // TODO: Bounds Triggers
 
-            // TODO: Checkpoints
+            if (equalsIgnoreCase(child.mClassName, "Trigger"))
+            {
+                GET_VAR_MAP(child);
+
+                if (equalsIgnoreCase(variables.getString("dataBlock"), "HelpTrigger"))
+                {
+                    Mission::HelpTrigger trigger;
+                    trigger.position = variables.getPoint("position");
+                    trigger.rotation = variables.getAngAxis("rotation");
+                    trigger.scale = variables.getPoint("scale");
+                    trigger.polyhedron = variables.getString("polyhedron");
+                    trigger.msg = variables.getString("text");
+                    mission->helpTriggers.push_back(trigger);
+                    continue;
+                }
+
+                if (equalsIgnoreCase(variables.getString("dataBlock"), "InBoundsTrigger"))
+                {
+                    Mission::BoundsTrigger trigger;
+                    trigger.position = variables.getPoint("position");
+                    trigger.rotation = variables.getAngAxis("rotation");
+                    trigger.scale = variables.getPoint("scale");
+                    trigger.polyhedron = variables.getString("polyhedron");
+                    trigger.inBounds = true;
+                    mission->boundsTriggers.push_back(trigger);
+                    continue;
+                }
+
+                if (equalsIgnoreCase(variables.getString("dataBlock"), "OutOfBoundsTrigger"))
+                {
+                    Mission::BoundsTrigger trigger;
+                    trigger.position = variables.getPoint("position");
+                    trigger.rotation = variables.getAngAxis("rotation");
+                    trigger.scale = variables.getPoint("scale");
+                    trigger.polyhedron = variables.getString("polyhedron");
+                    trigger.inBounds = false;
+                    mission->boundsTriggers.push_back(trigger);
+                    continue;
+                }
+
+                continue;
+            }
 
             // TODO: Multiplayer Gem Spawns
 
