@@ -160,8 +160,6 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 continue;
             }
 
-            // TODO: Moving Platforms
-
             if (equalsIgnoreCase(child.mClassName, "SimGroup") && equalsIgnoreCase(child.mName, "SpawnPoints"))
             {
                 for (auto& spawnPoint : child.mChildren)
@@ -181,11 +179,88 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
 
             if (equalsIgnoreCase(child.mClassName, "SimGroup"))
             {
+                Mission::MovingGeometry movingGeometry;
+                movingGeometry.triggered = false;
+                bool isMovingGeometry = false;
+                for (auto& obj : child.mChildren)
+                {
+                    if (equalsIgnoreCase(obj.mClassName, "PathedInterior"))
+                    {
+                        GET_VAR_MAP(obj);
+                        isMovingGeometry = true;
+
+                        movingGeometry.name = obj.mName;
+                        movingGeometry.type = "Interior";
+                        movingGeometry.subtype = variables.getString("dataBlock");
+                        movingGeometry.position = variables.getPoint("position");
+                        movingGeometry.rotation = variables.getAngAxis("rotation");
+                        movingGeometry.scale = variables.getPoint("scale");
+                        movingGeometry.initialTargetPosition = variables.getInt("initialTargetPosition");
+                        movingGeometry.initialPosition = variables.getInt("initialPosition");
+                        movingGeometry.path = variables.getString("interiorResource");
+                        movingGeometry.indexInFile = variables.getInt("interiorIndex");
+
+                        break;
+                    }
+                }
+
+                if (isMovingGeometry)
+                {
+                    for (auto& obj : child.mChildren)
+                    {
+                        if (equalsIgnoreCase(obj.mClassName, "Path"))
+                        {
+                            GET_VAR_MAP(obj);
+                            movingGeometry.looping = variables.getBool("isLooping");
+
+                            for (auto& pathNode : obj.mChildren)
+                            {
+                                if (!equalsIgnoreCase(pathNode.mClassName, "Marker"))
+                                {
+                                    std::cerr << "Non-marker in path: " << pathNode.mClassName << std::endl;
+                                    continue;
+                                }
+                                GET_VAR_MAP(pathNode);
+                                Mission::MovingGeometry::KeyFrame node;
+                                node.position = variables.getPoint("position");
+                                node.rotation = variables.getAngAxis("rotation");
+                                node.scale = variables.getPoint("scale");
+                                node.seqNum = variables.getInt("seqNum");
+                                node.type = variables.getString("type");
+                                node.msToNext = variables.getInt("msToNext");
+                                node.smoothingType = variables.getString("smoothingType");
+
+                                movingGeometry.keyframes.push_back(node);
+                            }
+                            continue;
+                        }
+
+                        if (equalsIgnoreCase(obj.mClassName, "Trigger"))
+                        {
+                            GET_VAR_MAP(obj);
+                            movingGeometry.triggered = true;
+                            Mission::MovingGeometry::Trigger trigger;
+                            trigger.position = variables.getPoint("position");
+                            trigger.rotation = variables.getAngAxis("rotation");
+                            trigger.scale = variables.getPoint("scale");
+                            trigger.type = variables.getString("dataBlock");
+                            trigger.polyhedron = variables.getString("polyhedron");
+                            trigger.targetTime = variables.getInt("targetTime");
+                            movingGeometry.trigger = trigger;
+                            continue;
+                        }
+                    }
+
+                    mission->movingGeometries.push_back(movingGeometry);
+                    continue;
+                }
+
+
                 Mission::Checkpoint checkpoint;
                 bool isCheckpoint = false;
                 for (auto& obj : child.mChildren)
                 {
-                    if (obj.mClassName == "StaticShape")
+                    if (equalsIgnoreCase(obj.mClassName, "StaticShape"))
                     {
                         GET_VAR_MAP(obj);
                         if (equalsIgnoreCase(variables.getString("dataBlock"), "checkPointShape"))
@@ -205,7 +280,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 {
                     for (auto& obj : child.mChildren)
                     {
-                        if (obj.mClassName == "Trigger")
+                        if (equalsIgnoreCase(obj.mClassName, "Trigger"))
                         {
                             GET_VAR_MAP(obj);
                             if (equalsIgnoreCase(variables.getString("dataBlock"), "CheckPointTrigger"))

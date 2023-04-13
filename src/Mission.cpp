@@ -64,8 +64,6 @@ void Mission::debugPrint()
         std::cout << ")" << std::endl;
     }
 
-    // TODO: Moving Platforms
-
     std::cout << "Mission Spawn Points: " << std::endl;
     for (auto& spawn : mission->spawnPoints)
     {
@@ -102,6 +100,53 @@ void Mission::debugPrint()
         std::cout << "\tBounds Trigger scale: " << trigger.scale.x << ", " << trigger.scale.y << ", " << trigger.scale.z << std::endl;
         std::cout << "\tBounds Trigger Polyhedron: " << trigger.polyhedron << std::endl;
         std::cout << "\tBounds Trigger InBounds: " << (trigger.inBounds ? "true" : "false") << std::endl;
+        std::cout << ")" << std::endl;
+    }
+
+    std::cout << "Moving Geometry: " << std::endl;
+    for (auto& geometry : mission->movingGeometries)
+    {
+        std::cout << "Moving Geometry" << std::endl;
+        std::cout << "(" << std::endl;
+        std::cout << "\tMoving Geometry type: " << geometry.type << std::endl;
+        std::cout << "\tMoving Geometry subtype: " << geometry.subtype << std::endl;
+        std::cout << "\tMoving Geometry position: " << geometry.position.x << ", " << geometry.position.y << ", " << geometry.position.z << std::endl;
+        std::cout << "\tMoving Geometry rotation: " << geometry.rotation.x << ", " << geometry.rotation.y << ", " << geometry.rotation.z << ", " << geometry.rotation.angle << std::endl;
+        std::cout << "\tMoving Geometry scale: " << geometry.scale.x << ", " << geometry.scale.y << ", " << geometry.scale.z << std::endl;
+        std::cout << "\tMoving Geometry file: " << geometry.path << std::endl;
+        std::cout << "\tMoving Geometry indexInFile: " << geometry.indexInFile << std::endl;
+        std::cout << "\tMoving Geometry initialTargetPosition: " << geometry.initialTargetPosition << std::endl;
+        std::cout << "\tMoving Geometry initialPosition: " << geometry.initialPosition << std::endl;
+        std::cout << "\tMoving Geometry Looping: " << (geometry.looping ? "true" : "false") << std::endl;
+        std::cout << "\tMoving Geometry Triggered: " << (geometry.triggered ? "true" : "false") << std::endl;
+        if (geometry.triggered)
+        {
+            std::cout << "\tMoving Geometry Trigger:" << std::endl;
+            std::cout << "\t(" << std::endl;
+            std::cout << "\t\tMoving Geometry Trigger type: " << geometry.trigger.type << std::endl;
+            std::cout << "\t\tMoving Geometry Trigger position: " << geometry.trigger.position.x << ", " << geometry.trigger.position.y << ", " << geometry.trigger.position.z << std::endl;
+            std::cout << "\t\tMoving Geometry Trigger rotation: " << geometry.trigger.rotation.x << ", " << geometry.trigger.rotation.y << ", " << geometry.trigger.rotation.z << ", " << geometry.trigger.rotation.angle << std::endl;
+            std::cout << "\t\tMoving Geometry Trigger scale: " << geometry.trigger.scale.x << ", " << geometry.trigger.scale.y << ", " << geometry.trigger.scale.z << std::endl;
+            std::cout << "\t\tMoving Geometry Trigger Polyhedron: " << geometry.trigger.polyhedron << std::endl;
+            std::cout << "\t\tMoving Geometry Trigger TargetTime: " << geometry.trigger.targetTime << std::endl;
+            std::cout << "\t)" << std::endl;
+        }
+
+        std::cout << "\tMoving Geometry Keyframes: " << std::endl;
+        for (auto& keyframe : geometry.keyframes)
+        {
+            std::cout << "\tKeyframe" << std::endl;
+            std::cout << "\t(" << std::endl;
+            std::cout << "\t\tKeyframe position: " << keyframe.position.x << ", " << keyframe.position.y << ", " << keyframe.position.z << std::endl;
+            std::cout << "\t\tKeyframe rotation: " << keyframe.rotation.x << ", " << keyframe.rotation.y << ", " << keyframe.rotation.z << ", " << keyframe.rotation.angle << std::endl;
+            std::cout << "\t\tKeyframe scale: " << keyframe.scale.x << ", " << keyframe.scale.y << ", " << keyframe.scale.z << std::endl;
+            std::cout << "\t\tKeyframe seqNum: " << keyframe.seqNum << std::endl;
+            std::cout << "\t\tKeyframe type: " << keyframe.type << std::endl;
+            std::cout << "\t\tKeyframe msToNext: " << keyframe.msToNext << std::endl;
+            std::cout << "\t\tKeyframe smoothingType: " << keyframe.smoothingType << std::endl;
+            std::cout << "\t)" << std::endl;
+        }
+
         std::cout << ")" << std::endl;
     }
 

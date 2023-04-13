@@ -78,19 +78,35 @@ struct Mission
         AngAxis rotation;
         Point scale;
         S32 initialTargetPosition;
+        S32 initialPosition;
         bool looping;
 
         // TODO: For the new format we will change this to support being embedded in the file
         std::string path;
         U32 indexInFile;
 
+        bool triggered;
+        struct Trigger
+        {
+            std::string type;
+            Point position;
+            AngAxis rotation;
+            Point scale;
+            std::string polyhedron;
+
+            S32 targetTime;
+        };
+        Trigger trigger;
+
         struct KeyFrame
         {
             Point position;
             AngAxis rotation;
             Point scale;
-            U32 timeToNext;
-            U32 smoothingType;
+            U32 seqNum;
+            std::string type;
+            U32 msToNext;
+            std::string smoothingType;
         };
         std::vector<KeyFrame> keyframes;
     };
