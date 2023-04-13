@@ -1,6 +1,7 @@
 #pragma once
 
 #include <platform/types.h>
+#include "Strings.hpp"
 #include <string>
 #include <vector>
 
@@ -8,9 +9,9 @@ struct Mission
 {
     struct Info
     {
-        std::string name;
-        bool nameLocalized;
-        std::string description;
+        LocalizedString name;
+        LocalizedString description;
+        LocalizedString startHelpText;
         std::string type;
         std::string artist;
         std::string guid;
@@ -111,9 +112,9 @@ struct Mission
         Point position;
         AngAxis rotation;
         Point scale;
+        std::string polyhedron;
 
-        std::string msg;
-        bool localized;
+        LocalizedString msg;
     };
     std::vector<HelpTrigger> helpTriggers;
 
@@ -122,6 +123,7 @@ struct Mission
         Point position;
         AngAxis rotation;
         Point scale;
+        std::string polyhedron;
 
         bool inBounds;
     };
@@ -139,6 +141,7 @@ struct Mission
             Point position;
             AngAxis rotation;
             Point scale;
+            std::string polyhedron;
         };
         Trigger trigger;
     };

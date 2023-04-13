@@ -1,4 +1,4 @@
-#include "mis_parser.h"
+#include "MissionLoaderText.hpp"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -130,19 +130,16 @@ bool processMissionInfo(const MissionParser::ObjectDefinition& object, Mission* 
     if (!getVariables(object, &variables))
         return false;
 
-    std::string name = getVariableValue(variables, "name");
-    mission->info.nameLocalized = name.length() > 0 && name[0] == '$';
-    if (mission->info.nameLocalized && name.rfind("$Text::", 0) == 0)
-        name = name.substr(7);
-    mission->info.name = name;
+    mission->info.name = getVariableValue(variables, "name");
     mission->info.description = getVariableValue(variables, "desc");
     mission->info.type = getVariableValue(variables, "type");
     mission->info.artist = getVariableValue(variables, "artist");
+    mission->info.startHelpText = getVariableValue(variables, "startHelpText");
     mission->info.guid = getVariableValue(variables, "guid");
     mission->info.levelIndex = getIntVariableValue(variables, "level");
     mission->info.includeInLevelList = getBoolVariableValue(variables, "include");
     std::string gameMode = getVariableValue(variables, "gameMode");
-    if (gameMode == "")
+    if (gameMode.empty())
         gameMode = "race";
     mission->info.gameMode = gameMode;
     mission->info.gameType = getVariableValue(variables, "gameType");
@@ -273,6 +270,8 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                 continue;
             }
 
+
+
             // TODO: Help Triggers
 
             // TODO: Bounds Triggers
@@ -303,7 +302,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
     return success;
 }
 
-bool parse_mis_file(const char* filename, Mission* mission)
+bool LoadMissionText(const char* filename, Mission* mission)
 {
     std::vector<MissionParser::ObjectDefinition> objects;
 

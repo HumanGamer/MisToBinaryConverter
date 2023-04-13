@@ -1,6 +1,7 @@
 #include <iostream>
 
-#include "mis_parser.h"
+#include "Mission.hpp"
+#include "MissionLoaderText.hpp"
 
 int main(int argc, const char** argv)
 {
@@ -14,36 +15,36 @@ int main(int argc, const char** argv)
 
     std::cout << "Parsing file: " << fileName << std::endl;
 
-    Mission mis_file;
-    if (!parse_mis_file(fileName, &mis_file))
+    Mission mission;
+    if (!LoadMissionText(fileName, &mission))
     {
         std::cout << "Failed to parse file" << std::endl;
         return 1;
     }
 
-    std::cout << "Mission name: " << mis_file.info.name << std::endl;
-    std::cout << "Mission description: " << mis_file.info.description << std::endl;
-    std::cout << "Mission name localized: " << mis_file.info.nameLocalized << std::endl;
-    std::cout << "Mission type: " << mis_file.info.type << std::endl;
-    std::cout << "Mission artist: " << mis_file.info.artist << std::endl;
-    std::cout << "Mission guid: " << mis_file.info.guid << std::endl;
-    std::cout << "Mission level index: " << mis_file.info.levelIndex << std::endl;
-    std::cout << "Mission include in level list: " << mis_file.info.includeInLevelList << std::endl;
-    std::cout << "Mission game mode: " << mis_file.info.gameMode << std::endl;
-    std::cout << "Mission game type: " << mis_file.info.gameType << std::endl;
-    std::cout << "Mission time limit: " << mis_file.info.timeLimit << std::endl;
-    std::cout << "Mission par goal score: " << mis_file.info.parGoal.score << std::endl;
-    std::cout << "Mission par goal time: " << mis_file.info.parGoal.time << std::endl;
-    std::cout << "Mission gold goal score: " << mis_file.info.goldGoal.score << std::endl;
-    std::cout << "Mission gold goal time: " << mis_file.info.goldGoal.time << std::endl;
-    std::cout << "Mission difficulty: " << mis_file.info.difficulty << std::endl;
-    std::cout << "Mission num gems: " << mis_file.info.numGems << std::endl;
-    std::cout << "Mission gem group radius: " << mis_file.info.gemGroupRadius << std::endl;
-    std::cout << "Mission max gems per group: " << mis_file.info.maxGemsPerGroup << std::endl;
-    std::cout << "Mission sky: " << mis_file.info.sky << std::endl;
+    std::cout << "Mission name: " << mission.info.name << std::endl;
+    std::cout << "Mission description: " << mission.info.description << std::endl;
+    std::cout << "Mission startHelpText: " << mission.info.startHelpText << std::endl;
+    std::cout << "Mission type: " << mission.info.type << std::endl;
+    std::cout << "Mission artist: " << mission.info.artist << std::endl;
+    std::cout << "Mission guid: " << mission.info.guid << std::endl;
+    std::cout << "Mission level index: " << mission.info.levelIndex << std::endl;
+    std::cout << "Mission include in level list: " << mission.info.includeInLevelList << std::endl;
+    std::cout << "Mission game mode: " << mission.info.gameMode << std::endl;
+    std::cout << "Mission game type: " << mission.info.gameType << std::endl;
+    std::cout << "Mission time limit: " << mission.info.timeLimit << std::endl;
+    std::cout << "Mission par goal score: " << mission.info.parGoal.score << std::endl;
+    std::cout << "Mission par goal time: " << mission.info.parGoal.time << std::endl;
+    std::cout << "Mission gold goal score: " << mission.info.goldGoal.score << std::endl;
+    std::cout << "Mission gold goal time: " << mission.info.goldGoal.time << std::endl;
+    std::cout << "Mission difficulty: " << mission.info.difficulty << std::endl;
+    std::cout << "Mission num gems: " << mission.info.numGems << std::endl;
+    std::cout << "Mission gem group radius: " << mission.info.gemGroupRadius << std::endl;
+    std::cout << "Mission max gems per group: " << mission.info.maxGemsPerGroup << std::endl;
+    std::cout << "Mission sky: " << mission.info.sky << std::endl;
 
     std::cout << "Mission shapes: " << std::endl;
-    for (auto& shape : mis_file.shapes)
+    for (auto& shape : mission.shapes)
     {
         std::cout << "Shape " << shape.name << std::endl;
         std::cout << "(" << std::endl;
@@ -55,7 +56,7 @@ int main(int argc, const char** argv)
     }
 
     std::cout << "Mission Geometry: " << std::endl;
-    for (auto& shape : mis_file.geometries)
+    for (auto& shape : mission.geometries)
     {
         std::cout << "Geometry " << shape.name << std::endl;
         std::cout << "(" << std::endl;
@@ -68,7 +69,7 @@ int main(int argc, const char** argv)
     }
 
     std::cout << "Mission Items: " << std::endl;
-    for (auto& item : mis_file.items)
+    for (auto& item : mission.items)
     {
         std::cout << "Item " << item.name << std::endl;
         std::cout << "(" << std::endl;
@@ -83,7 +84,7 @@ int main(int argc, const char** argv)
     // TODO: Moving Platforms
 
     std::cout << "Mission Spawn Points: " << std::endl;
-    for (auto& spawn : mis_file.spawnPoints)
+    for (auto& spawn : mission.spawnPoints)
     {
         std::cout << "Spawn Point " << spawn.name << std::endl;
         std::cout << "(" << std::endl;
@@ -105,8 +106,8 @@ int main(int argc, const char** argv)
 
     std::cout << "Mission Preview Camera: " << std::endl;
     std::cout << "(" << std::endl;
-    std::cout << "\tPreview Camera position: " << mis_file.previewCamera.position.x << ", " << mis_file.previewCamera.position.y << ", " << mis_file.previewCamera.position.z << std::endl;
-    std::cout << "\tPreview Camera rotation: " << mis_file.previewCamera.rotation.x << ", " << mis_file.previewCamera.rotation.y << ", " << mis_file.previewCamera.rotation.z << ", " << mis_file.previewCamera.rotation.angle << std::endl;
+    std::cout << "\tPreview Camera position: " << mission.previewCamera.position.x << ", " << mission.previewCamera.position.y << ", " << mission.previewCamera.position.z << std::endl;
+    std::cout << "\tPreview Camera rotation: " << mission.previewCamera.rotation.x << ", " << mission.previewCamera.rotation.y << ", " << mission.previewCamera.rotation.z << ", " << mission.previewCamera.rotation.angle << std::endl;
     std::cout << ")" << std::endl;
 
     std::cout << "Done!" << std::endl;

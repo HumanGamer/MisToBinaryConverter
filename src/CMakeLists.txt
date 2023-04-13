@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(MAIN_SRC
     # Sources
     main.cpp
-    mis_parser.cpp
+    Mission.cpp
+    MissionLoaderText.cpp
+    Strings.cpp
     MissionParser/Tokenizer.cpp
     MissionParser/Parser.cpp
     MissionParser/Statement.cpp
@@ -14,8 +16,9 @@ set(MAIN_SRC
 
     # Headers
     platform/types.h
-    Mission.h
-    mis_parser.h
+    Mission.hpp
+    MissionLoaderText.hpp
+    Strings.hpp
     MissionParser/Tokenizer.hpp
     MissionParser/TokenTypes.inc
     MissionParser/Parser.hpp
