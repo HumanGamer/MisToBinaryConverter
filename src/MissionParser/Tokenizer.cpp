@@ -66,7 +66,7 @@ namespace MissionParser
                 {
                     if (currentToken.mType == WHITESPACE)
                     {
-                        currentToken.mType == INTEGER_LITERAL;
+                        currentToken.mType = INTEGER_LITERAL;
                         currentToken.mText.append(1, currCh);
                     } else if (currentToken.mType == POTENTIAL_FLOAT)
                     {
