@@ -202,7 +202,7 @@ namespace MissionParser
     {
         if (token.mType == COMMENT)
         {
-            std::cout << "Ignoring comment: " << token.mText << std::endl;
+            //std::cout << "Ignoring comment: " << token.mText << std::endl;
         }
         else if (token.mType != WHITESPACE)
         {

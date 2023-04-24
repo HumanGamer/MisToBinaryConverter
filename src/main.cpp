@@ -2,6 +2,7 @@
 
 #include "Mission.hpp"
 #include "MissionLoaderText.hpp"
+#include "LevelFile.hpp"
 
 int main(int argc, const char** argv)
 {
@@ -22,7 +23,15 @@ int main(int argc, const char** argv)
         return 1;
     }
 
-    mission.debugPrint();
+    //mission.debugPrint();
+
+    LevelFile levelFile;
+    levelFile.setMission(&mission);
+    if (!levelFile.save("test.mblv"))
+    {
+        std::cout << "Failed to save file" << std::endl;
+        return 1;
+    }
 
     std::cout << "Done!" << std::endl;
 
