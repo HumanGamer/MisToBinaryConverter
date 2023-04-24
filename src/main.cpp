@@ -26,8 +26,8 @@ int main(int argc, const char** argv)
     //mission.debugPrint();
 
     LevelFile levelFile;
-    levelFile.setMission(&mission);
-    if (!levelFile.save("test.mblv"))
+    levelFile.SetMission(&mission);
+    if (!levelFile.Save("test.mblv"))
     {
         std::cout << "Failed to save file" << std::endl;
         return 1;

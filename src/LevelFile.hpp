@@ -9,11 +9,11 @@ public:
     LevelFile();
     ~LevelFile();
 
-    bool load(const char* filename);
-    bool save(const char* filename);
+    bool Load(const char* filename);
+    bool Save(const char* filename);
 
-    void setMission(Mission* mission) { mMission = mission; }
-    Mission* getMission() { return mMission; }
+    void SetMission(Mission* mission) { mMission = mission; }
+    Mission* GetMission() { return mMission; }
 
 private:
     Mission* mMission;

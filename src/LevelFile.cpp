@@ -11,12 +11,12 @@ LevelFile::~LevelFile()
 
 }
 
-bool LevelFile::load(const char *filename)
+bool LevelFile::Load(const char *filename)
 {
     return false;
 }
 
-bool LevelFile::save(const char *filename)
+bool LevelFile::Save(const char *filename)
 {
     FileStream file;
     if (!file.Open(filename, FileStream::OpenMode_Write))
