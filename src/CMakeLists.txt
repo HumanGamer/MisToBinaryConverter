@@ -16,6 +16,7 @@ set(MAIN_SRC
     MissionParser/ObjectDefinition.cpp
     MissionParser/VariableMap.cpp
     LevelFile.cpp
+    FileStream.cpp
 
     # Headers
     platform/types.h
@@ -32,6 +33,7 @@ set(MAIN_SRC
     MissionParser/VariableMap.hpp
     CaseInsensitiveMap.hpp
     LevelFile.hpp
+    FileStream.hpp
 )
 
 add_executable(MisToBinaryConverter ${MAIN_SRC})

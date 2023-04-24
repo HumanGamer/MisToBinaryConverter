@@ -1,6 +1,5 @@
 #include "LevelFile.hpp"
-
-#include <fstream>
+#include "FileStream.hpp"
 
 LevelFile::LevelFile()
 {
@@ -19,19 +18,14 @@ bool LevelFile::load(const char *filename)
 
 bool LevelFile::save(const char *filename)
 {
-    std::fstream file;
-    file.open(filename, std::ios::out | std::ios::binary);
-
-    if (file.fail())
+    FileStream file;
+    if (!file.Open(filename, FileStream::OpenMode_Write))
         return false;
 
-    file.write("MBLV", 4);
+    file.WriteString("MBLV");
+    file.Write<uint32_t>(0); // version
 
-    int version = 0;
-    file.write((char*)&version, 4);
 
-    file.flush();
-    file.close();
 
     return true;
 }
