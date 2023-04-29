@@ -3,6 +3,7 @@
 #include <platform/types.h>
 #include <fstream>
 #include <string>
+#include "Strings.hpp"
 
 class FileStream
 {
@@ -47,6 +48,9 @@ public:
     }
 
     bool WriteString(const std::string &data);
+    bool WriteCString(const std::string &data);
+    bool WriteLenString(const std::string &data);
+    bool WriteLocalizedString(const LocalizedString &data);
 
 protected:
     std::fstream mStream;

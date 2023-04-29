@@ -1,4 +1,5 @@
 #include "FileStream.hpp"
+#include "Strings.hpp"
 
 FileStream::FileStream()
 {
@@ -74,4 +75,25 @@ bool FileStream::WriteString(const std::string &data)
 {
     mStream.write(data.c_str(), data.length());
     return !mStream.fail();
+}
+
+bool FileStream::WriteCString(const std::string &data)
+{
+    if (!this->WriteString(data))
+        return false;
+    this->Write('\0');
+    return !mStream.fail();
+}
+
+bool FileStream::WriteLenString(const std::string &data)
+{
+    this->Write<uint32_t>(data.length());
+    return this->WriteString(data);
+}
+
+bool FileStream::WriteLocalizedString(const LocalizedString &data)
+{
+    if (!this->Write(data.IsLocalized()))
+        return false;
+    return this->WriteCString(data.GetTrimmedValue());
 }
