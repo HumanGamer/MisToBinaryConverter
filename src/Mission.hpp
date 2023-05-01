@@ -93,6 +93,8 @@ struct Mission
             Point position;
             AngAxis rotation;
             Point scale;
+
+            // TODO: Maybe do this without strings?
             std::string polyhedron;
 
             S32 targetTime;
