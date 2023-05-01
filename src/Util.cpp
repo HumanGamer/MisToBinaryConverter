@@ -33,3 +33,21 @@ std::string formatTime(U32 milliseconds)
            std::to_string((U32)secondsTen) + std::to_string((U32)secondsOne) + "." +
            std::to_string((U32)hundredthsTen) + std::to_string((U32)hundredthsOne);
 }
+
+xg::Guid stringToGuid(const std::string& str)
+{
+    const char* strC = str.c_str();
+    xg::Guid result;
+
+    if (strC[0] == '{' && strC[strlen(strC) - 1] == '}')
+    {
+        char s[256];
+        strcpy_s(s, strC + 1);
+        s[strlen(s) - 1] = '\0';
+        result = xg::Guid(s);
+    } else {
+        result = xg::Guid(strC);
+    }
+
+    return result;
+}

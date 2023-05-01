@@ -4,6 +4,7 @@
 #include "Strings.hpp"
 #include <string>
 #include <vector>
+#include <crossguid/guid.hpp>
 
 struct Mission
 {
@@ -14,7 +15,7 @@ struct Mission
         LocalizedString startHelpText;
         std::string type;
         std::string artist;
-        std::string guid;
+        xg::Guid guid;
         U32 levelIndex;
         bool includeInLevelList;
         std::string gameMode;

@@ -59,7 +59,7 @@ bool processMissionInfo(const MissionParser::ObjectDefinition& object, Mission* 
     if (mission->info.artist.empty())
         mission->info.artist = "Unknown";
     mission->info.startHelpText = variables.getString("startHelpText");
-    mission->info.guid = variables.getString("guid");
+    mission->info.guid = stringToGuid(variables.getString("guid"));
     mission->info.levelIndex = variables.getInt("level");
     mission->info.includeInLevelList = variables.getBool("include");
     std::string gameMode = variables.getString("gameMode");

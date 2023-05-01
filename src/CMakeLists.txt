@@ -37,4 +37,6 @@ set(MAIN_SRC
 )
 
 add_executable(MisToBinaryConverter ${MAIN_SRC})
+target_link_libraries(MisToBinaryConverter PRIVATE crossguid)
+add_dependencies(MisToBinaryConverter crossguid)
 target_include_directories(MisToBinaryConverter PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

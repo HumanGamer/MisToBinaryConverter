@@ -33,8 +33,7 @@ bool LevelFile::Save(const char *filename)
     file.WriteLocalizedString(mMission->info.description);
     file.WriteLocalizedString(mMission->info.startHelpText);
 
-    // TODO: Write GUID in binary format
-    file.WriteCString(mMission->info.guid);
+    file.Write(mMission->info.guid);
 
     file.WriteCString(mMission->info.type);
     file.WriteCString(mMission->info.artist);

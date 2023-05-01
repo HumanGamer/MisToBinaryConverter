@@ -1,6 +1,7 @@
 #include "Mission.hpp"
 #include "Util.hpp"
 #include <iostream>
+#include <algorithm>
 
 void Mission::debugPrint()
 {
@@ -15,10 +16,14 @@ void Mission::debugPrint()
     std::cout << "type: " << mission->info.type << std::endl;
     if (!mission->info.startHelpText.Empty())
     std::cout << "artist: " << mission->info.artist << std::endl;
-    if (mission->info.guid.empty())
-        std::cout << "guid: {INVALID_GUID}" << std::endl;
+    if (mission->info.guid.isValid())
+    {
+        std::string str = mission->info.guid.str();
+        std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+        std::cout << "guid: {" << str << "}" << std::endl;
+    }
     else
-        std::cout << "guid: " << mission->info.guid << std::endl;
+        std::cout << "guid: {INVALID_GUID}" << std::endl;
     std::cout << "levelIndex: " << mission->info.levelIndex << std::endl;
     std::cout << "includeInLevelList: " << mission->info.includeInLevelList << std::endl;
     std::cout << "gameMode: " << mission->info.gameMode << std::endl;
