@@ -56,8 +56,8 @@ bool processMissionInfo(const MissionParser::ObjectDefinition& object, Mission* 
     mission->info.description = variables.getString("desc");
     mission->info.type = variables.getString("type");
     mission->info.artist = variables.getString("artist");
-    if (mission->info.artist.empty())
-        mission->info.artist = "Unknown";
+    //if (mission->info.artist.empty())
+    //    mission->info.artist = "Unknown";
     mission->info.startHelpText = variables.getString("startHelpText");
     mission->info.guid = stringToGuid(variables.getString("guid"));
     mission->info.levelIndex = variables.getInt("level");

@@ -51,3 +51,15 @@ xg::Guid stringToGuid(const std::string& str)
 
     return result;
 }
+
+std::string guidToString(const xg::Guid& guid)
+{
+    if (guid.isValid())
+    {
+        std::string str = guid.str();
+        std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+        return "{" + str + "}";
+    } else
+        return "{INVALID_GUID}";
+}
+
