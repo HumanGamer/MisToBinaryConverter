@@ -45,27 +45,27 @@ bool LevelFile::Save(const char *filename)
         memStream.WriteCString(mMission->info.gameMode);
         memStream.WriteCString(mMission->info.sky);
 
-        memStream.Write(mMission->info.levelIndex);
+        memStream.Write7BitEncodedInt(mMission->info.levelIndex);
         memStream.Write(mMission->info.includeInLevelList);
-        memStream.Write(mMission->info.difficulty);
+        memStream.Write7BitEncodedInt(mMission->info.difficulty);
 
         memStream.Write(mMission->info.multiplayer);
         if (mMission->info.multiplayer)
         {
-            memStream.Write(mMission->info.timeLimit);
-            memStream.Write(mMission->info.parGoal.score);
-            memStream.Write(mMission->info.goldGoal.score);
-            memStream.Write(mMission->info.numGems);
-            memStream.Write(mMission->info.gemGroupRadius);
-            memStream.Write(mMission->info.maxGemsPerGroup);
+            memStream.Write7BitEncodedInt(mMission->info.timeLimit);
+            memStream.Write7BitEncodedInt(mMission->info.parGoal.score);
+            memStream.Write7BitEncodedInt(mMission->info.goldGoal.score);
+            memStream.Write7BitEncodedInt(mMission->info.numGems);
+            memStream.Write7BitEncodedInt(mMission->info.gemGroupRadius);
+            memStream.Write7BitEncodedInt(mMission->info.maxGemsPerGroup);
         } else
         {
-            memStream.Write(mMission->info.parGoal.time);
-            memStream.Write(mMission->info.goldGoal.time);
+            memStream.Write7BitEncodedInt(mMission->info.parGoal.time);
+            memStream.Write7BitEncodedInt(mMission->info.goldGoal.time);
         }
 
         // Shapes
-        memStream.Write<uint32_t>(mMission->shapes.size());
+        memStream.Write7BitEncodedInt((U32)mMission->shapes.size());
         for (auto &shape: mMission->shapes)
         {
             memStream.WriteCString(shape.type);
@@ -76,7 +76,7 @@ bool LevelFile::Save(const char *filename)
         }
 
         // Items
-        memStream.Write<uint32_t>(mMission->items.size());
+        memStream.Write7BitEncodedInt((U32)mMission->items.size());
         for (auto &item: mMission->items)
         {
             memStream.WriteCString(item.type);
@@ -88,7 +88,7 @@ bool LevelFile::Save(const char *filename)
         }
 
         // Geometry
-        memStream.Write<uint32_t>(mMission->geometries.size());
+        memStream.Write7BitEncodedInt((U32)mMission->geometries.size());
         for (auto &geometry: mMission->geometries)
         {
             memStream.WriteCString(geometry.type);
@@ -102,7 +102,7 @@ bool LevelFile::Save(const char *filename)
         }
 
         // Moving Geometry
-        memStream.Write<uint32_t>(mMission->movingGeometries.size());
+        memStream.Write7BitEncodedInt((U32)mMission->movingGeometries.size());
         for (auto &movingGeometry: mMission->movingGeometries)
         {
             memStream.WriteCString(movingGeometry.type);
@@ -111,13 +111,13 @@ bool LevelFile::Save(const char *filename)
             memStream.Write(movingGeometry.position);
             memStream.Write(movingGeometry.rotation);
             memStream.Write(movingGeometry.scale);
-            memStream.Write(movingGeometry.initialTargetPosition);
-            memStream.Write(movingGeometry.initialPosition);
+            memStream.Write7BitEncodedInt(movingGeometry.initialTargetPosition);
+            memStream.Write7BitEncodedInt(movingGeometry.initialPosition);
             memStream.Write(movingGeometry.looping);
 
             // TODO: Support embedded geometry
             memStream.WriteCString(movingGeometry.path);
-            memStream.Write(movingGeometry.indexInFile);
+            memStream.Write7BitEncodedInt(movingGeometry.indexInFile);
 
             memStream.Write(movingGeometry.triggered);
             if (movingGeometry.triggered)
@@ -127,25 +127,25 @@ bool LevelFile::Save(const char *filename)
                 memStream.Write(movingGeometry.trigger.rotation);
                 memStream.Write(movingGeometry.trigger.scale);
                 memStream.Write(movingGeometry.trigger.polyhedron);
-                memStream.Write(movingGeometry.trigger.targetTime);
+                memStream.Write7BitEncodedInt(movingGeometry.trigger.targetTime);
             }
 
             // Moving Geometry Keyframes
-            memStream.Write<uint32_t>(movingGeometry.keyframes.size());
+            memStream.Write7BitEncodedInt((U32)movingGeometry.keyframes.size());
             for (auto &keyframe: movingGeometry.keyframes)
             {
                 memStream.Write(keyframe.position);
                 memStream.Write(keyframe.rotation);
                 memStream.Write(keyframe.scale);
-                memStream.Write(keyframe.seqNum);
+                memStream.Write7BitEncodedInt(keyframe.seqNum);
                 memStream.WriteCString(keyframe.type);
-                memStream.Write(keyframe.msToNext);
+                memStream.Write7BitEncodedInt(keyframe.msToNext);
                 memStream.WriteCString(keyframe.smoothingType);
             }
         }
 
         // Spawn Points
-        memStream.Write<uint32_t>(mMission->spawnPoints.size());
+        memStream.Write7BitEncodedInt((U32)mMission->spawnPoints.size());
         for (auto &spawnPoint: mMission->spawnPoints)
         {
             memStream.WriteCString(spawnPoint.className);
@@ -157,7 +157,7 @@ bool LevelFile::Save(const char *filename)
         }
 
         // Help Triggers
-        memStream.Write<uint32_t>(mMission->helpTriggers.size());
+        memStream.Write7BitEncodedInt((U32)mMission->helpTriggers.size());
         for (auto &helpTrigger: mMission->helpTriggers)
         {
             memStream.Write(helpTrigger.position);
@@ -168,7 +168,7 @@ bool LevelFile::Save(const char *filename)
         }
 
         // Bounds Triggers
-        memStream.Write<uint32_t>(mMission->boundsTriggers.size());
+        memStream.Write7BitEncodedInt((U32)mMission->boundsTriggers.size());
         for (auto &boundsTrigger: mMission->boundsTriggers)
         {
             memStream.Write(boundsTrigger.position);
@@ -179,13 +179,13 @@ bool LevelFile::Save(const char *filename)
         }
 
         // Checkpoints
-        memStream.Write<uint32_t>(mMission->checkpoints.size());
+        memStream.Write7BitEncodedInt((U32)mMission->checkpoints.size());
         for (auto &checkpoint: mMission->checkpoints)
         {
             memStream.Write(checkpoint.position);
             memStream.Write(checkpoint.rotation);
             memStream.Write(checkpoint.scale);
-            memStream.Write(checkpoint.sequence);
+            memStream.Write7BitEncodedInt(checkpoint.sequence);
 
             // Checkpoint Trigger
             memStream.Write(checkpoint.trigger.position);
@@ -195,7 +195,7 @@ bool LevelFile::Save(const char *filename)
         }
 
         // Gem Spawns
-        memStream.Write<uint32_t>(mMission->gemSpawns.size());
+        memStream.Write7BitEncodedInt((U32)mMission->gemSpawns.size());
         for (auto &gemSpawn: mMission->gemSpawns)
         {
             memStream.WriteCString(gemSpawn.type);
@@ -210,6 +210,9 @@ bool LevelFile::Save(const char *filename)
     }
     U8* missionBytes = memStream.GetBytes();
     size_t missionSize = memStream.GetSize();
+
+    // Write the mission size to allow skipping the mission when reading
+    file.Write7BitEncodedInt((U32)missionSize);
 
     // Write the mission file
     file.WriteBytes((char*)missionBytes, missionSize);
