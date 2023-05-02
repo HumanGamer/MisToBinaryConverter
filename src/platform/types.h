@@ -18,6 +18,15 @@ typedef int64_t     S64;
 typedef float       F32;
 typedef double      F64;
 
+#pragma pack(push, 1)
+struct U24{
+    S32 data : 24;
+};
+struct S24{
+    S32 data : 24;
+};
+#pragma pack(pop)
+
 struct Point
 {
     F32 x;

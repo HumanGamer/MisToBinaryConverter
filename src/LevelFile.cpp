@@ -235,5 +235,8 @@ bool LevelFile::Save(const char *filename)
     file.Write7BitEncodedInt((U32)compressedMissionBytes.size());
     file.WriteBytes((char*)compressedMissionBytes.data(), compressedMissionBytes.size());
 
+//    file.Write7BitEncodedInt((U32)wrappedMissionSize);
+//    file.WriteBytes((char*)wrappedMissionBytes, wrappedMissionSize);
+
     return true;
 }
