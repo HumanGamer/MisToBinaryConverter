@@ -16,6 +16,7 @@ set(MAIN_SRC
     MissionParser/ObjectDefinition.cpp
     MissionParser/VariableMap.cpp
     LevelFile.cpp
+    Stream.cpp
     FileStream.cpp
 
     # Headers
@@ -33,6 +34,7 @@ set(MAIN_SRC
     MissionParser/VariableMap.hpp
     CaseInsensitiveMap.hpp
     LevelFile.hpp
+    Stream.hpp
     FileStream.hpp
 )
 
