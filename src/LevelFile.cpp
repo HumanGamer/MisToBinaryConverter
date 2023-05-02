@@ -31,8 +31,10 @@ bool LevelFile::Save(const char *filename)
         file.WriteString("MBLV");
         file.Write<U32>(0); // global version
 
-        file.WriteCString(
-            "ultra"); // game string to determine which game this level is for in case special features are needed
+        // game string to determine which game this level is for.
+        // this is so that other MB games can use the same level format,
+        // and still have their own versioning.
+        file.WriteCString("ultra");
         file.Write<U32>(0); // ultra version
     }
     file.EnableCompression();
