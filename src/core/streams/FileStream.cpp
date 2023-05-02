@@ -1,5 +1,5 @@
 #include "FileStream.hpp"
-#include "Strings.hpp"
+#include <core/Strings.hpp>
 
 FileStream::FileStream() = default;
 

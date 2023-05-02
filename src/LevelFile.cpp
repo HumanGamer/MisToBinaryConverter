@@ -1,5 +1,5 @@
 #include "LevelFile.hpp"
-#include "FileStream.hpp"
+#include <core/streams/FileStream.hpp>
 
 LevelFile::LevelFile()
 {

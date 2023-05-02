@@ -1,7 +1,7 @@
 #pragma once
 
 #include <platform/types.h>
-#include "Strings.hpp"
+#include <core/Strings.hpp>
 #include <string>
 #include <vector>
 #include <crossguid/guid.hpp>

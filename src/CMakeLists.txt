@@ -6,25 +6,26 @@ set(CMAKE_CXX_STANDARD 17)
 set(MAIN_SRC
     # Sources
     main.cpp
-    Mission.cpp
-    MissionLoaderText.cpp
-    Strings.cpp
-    Util.cpp
+    core/Strings.cpp
+    core/Util.cpp
+    core/streams/Stream.cpp
+    core/streams/FileStream.cpp
     MissionParser/Tokenizer.cpp
     MissionParser/Parser.cpp
     MissionParser/Statement.cpp
     MissionParser/ObjectDefinition.cpp
     MissionParser/VariableMap.cpp
+    Mission.cpp
+    MissionLoaderText.cpp
     LevelFile.cpp
-    Stream.cpp
-    FileStream.cpp
 
     # Headers
     platform/types.h
-    Mission.hpp
-    MissionLoaderText.hpp
-    Strings.hpp
-    Util.hpp
+    core/Strings.hpp
+    core/Util.hpp
+    core/streams/Stream.hpp
+    core/streams/FileStream.hpp
+    core/CaseInsensitiveMap.hpp
     MissionParser/Tokenizer.hpp
     MissionParser/TokenTypes.inc
     MissionParser/Parser.hpp
@@ -32,10 +33,9 @@ set(MAIN_SRC
     MissionParser/StatementKinds.inc
     MissionParser/ObjectDefinition.hpp
     MissionParser/VariableMap.hpp
-    CaseInsensitiveMap.hpp
+    Mission.hpp
+    MissionLoaderText.hpp
     LevelFile.hpp
-    Stream.hpp
-    FileStream.hpp
 )
 
 add_executable(MisToBinaryConverter ${MAIN_SRC})

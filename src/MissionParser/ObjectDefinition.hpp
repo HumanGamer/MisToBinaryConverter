@@ -1,7 +1,7 @@
 #pragma once
 
 #include <platform/types.h>
-#include <CaseInsensitiveMap.hpp>
+#include <core/CaseInsensitiveMap.hpp>
 #include "Statement.hpp"
 #include <string>
 #include <vector>

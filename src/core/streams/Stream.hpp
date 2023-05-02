@@ -2,7 +2,7 @@
 
 #include <platform/types.h>
 #include <string>
-#include "Strings.hpp"
+#include <core/Strings.hpp>
 
 class Stream
 {
