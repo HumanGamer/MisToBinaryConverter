@@ -1,6 +1,7 @@
 #include "LevelFile.hpp"
 #include <core/streams/MemStream.hpp>
 #include <core/streams/FileStream.hpp>
+#include <zlib.h>
 
 LevelFile::LevelFile()
 {
@@ -29,206 +30,205 @@ bool LevelFile::Save(const char *filename)
     file.WriteCString("ultra"); // game string to determine which game this level is for in case special features are needed
     file.Write<U32>(0); // ultra version
 
-    MemStream memStream;
+    MemStream wrappedMissionStream;
     {
-        // mission info
-        memStream.WriteLocalizedString(mMission->info.name);
-        memStream.WriteLocalizedString(mMission->info.description);
-        memStream.WriteLocalizedString(mMission->info.startHelpText);
-
-        memStream.Write(mMission->info.guid);
-
-        memStream.WriteSTString(mMission->info.type);
-        memStream.WriteSTString(mMission->info.artist);
-        memStream.WriteSTString(mMission->info.gameMode);
-        memStream.WriteSTString(mMission->info.sky);
-
-        memStream.Write7BitEncodedInt(mMission->info.levelIndex);
-        memStream.Write(mMission->info.includeInLevelList);
-        memStream.Write7BitEncodedInt(mMission->info.difficulty);
-
-        memStream.Write(mMission->info.multiplayer);
-        if (mMission->info.multiplayer)
+        MemStream baseMissionStream;
         {
-            memStream.Write7BitEncodedInt(mMission->info.timeLimit);
-            memStream.Write7BitEncodedInt(mMission->info.parGoal.score);
-            memStream.Write7BitEncodedInt(mMission->info.goldGoal.score);
-            memStream.Write7BitEncodedInt(mMission->info.numGems);
-            memStream.Write7BitEncodedInt(mMission->info.gemGroupRadius);
-            memStream.Write7BitEncodedInt(mMission->info.maxGemsPerGroup);
-        } else
-        {
-            memStream.Write7BitEncodedInt(mMission->info.parGoal.time);
-            memStream.Write7BitEncodedInt(mMission->info.goldGoal.time);
-        }
+            // mission info
+            baseMissionStream.WriteLocalizedString(mMission->info.name);
+            baseMissionStream.WriteLocalizedString(mMission->info.description);
+            baseMissionStream.WriteLocalizedString(mMission->info.startHelpText);
 
-        // Shapes
-        memStream.Write7BitEncodedInt((U32)mMission->shapes.size());
-        for (auto &shape: mMission->shapes)
-        {
-            memStream.WriteSTString(shape.type);
-            //memStream.WriteSTString(shape.name);
-            memStream.Write(shape.position);
-            memStream.Write(shape.rotation);
-            memStream.Write(shape.scale);
-        }
+            baseMissionStream.Write(mMission->info.guid);
 
-        // Items
-        memStream.Write7BitEncodedInt((U32)mMission->items.size());
-        for (auto &item: mMission->items)
-        {
-            memStream.WriteSTString(item.type);
-            //memStream.WriteCString(item.name);
-            memStream.Write(item.position);
-            memStream.Write(item.rotation);
-            memStream.Write(item.scale);
-            memStream.Write(item.rotate);
-        }
+            baseMissionStream.WriteSTString(mMission->info.type);
+            baseMissionStream.WriteSTString(mMission->info.artist);
+            baseMissionStream.WriteSTString(mMission->info.gameMode);
+            baseMissionStream.WriteSTString(mMission->info.sky);
 
-        // Geometry
-        memStream.Write7BitEncodedInt((U32)mMission->geometries.size());
-        for (auto &geometry: mMission->geometries)
-        {
-            memStream.WriteSTString(geometry.type);
-            //memStream.WriteCString(geometry.name);
-            memStream.Write(geometry.position);
-            memStream.Write(geometry.rotation);
-            memStream.Write(geometry.scale);
+            baseMissionStream.Write7BitEncodedInt(mMission->info.levelIndex);
+            baseMissionStream.Write(mMission->info.includeInLevelList);
+            baseMissionStream.Write7BitEncodedInt(mMission->info.difficulty);
 
-            // TODO: Support embedded geometry
-            memStream.WriteSTString(geometry.path);
-        }
-
-        // Moving Geometry
-        memStream.Write7BitEncodedInt((U32)mMission->movingGeometries.size());
-        for (auto &movingGeometry: mMission->movingGeometries)
-        {
-            memStream.WriteSTString(movingGeometry.type);
-            memStream.WriteSTString(movingGeometry.subtype);
-            //memStream.WriteSTString(movingGeometry.name);
-            memStream.Write(movingGeometry.position);
-            memStream.Write(movingGeometry.rotation);
-            memStream.Write(movingGeometry.scale);
-            memStream.Write7BitEncodedInt(movingGeometry.initialTargetPosition);
-            memStream.Write7BitEncodedInt(movingGeometry.initialPosition);
-            memStream.Write(movingGeometry.looping);
-
-            // TODO: Support embedded geometry
-            memStream.WriteSTString(movingGeometry.path);
-            memStream.Write7BitEncodedInt(movingGeometry.indexInFile);
-
-            memStream.Write(movingGeometry.triggered);
-            if (movingGeometry.triggered)
+            baseMissionStream.Write(mMission->info.multiplayer);
+            if (mMission->info.multiplayer)
             {
-                memStream.WriteSTString(movingGeometry.trigger.type);
-                memStream.Write(movingGeometry.trigger.position);
-                memStream.Write(movingGeometry.trigger.rotation);
-                memStream.Write(movingGeometry.trigger.scale);
-                memStream.Write(movingGeometry.trigger.polyhedron);
-                memStream.Write7BitEncodedInt(movingGeometry.trigger.targetTime);
+                baseMissionStream.Write7BitEncodedInt(mMission->info.timeLimit);
+                baseMissionStream.Write7BitEncodedInt(mMission->info.parGoal.score);
+                baseMissionStream.Write7BitEncodedInt(mMission->info.goldGoal.score);
+                baseMissionStream.Write7BitEncodedInt(mMission->info.numGems);
+                baseMissionStream.Write7BitEncodedInt(mMission->info.gemGroupRadius);
+                baseMissionStream.Write7BitEncodedInt(mMission->info.maxGemsPerGroup);
+            } else
+            {
+                baseMissionStream.Write7BitEncodedInt(mMission->info.parGoal.time);
+                baseMissionStream.Write7BitEncodedInt(mMission->info.goldGoal.time);
             }
 
-            // Moving Geometry Keyframes
-            memStream.Write7BitEncodedInt((U32)movingGeometry.keyframes.size());
-            for (auto &keyframe: movingGeometry.keyframes)
+            // Shapes
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->shapes.size());
+            for (auto &shape: mMission->shapes)
             {
-                memStream.Write(keyframe.position);
-                memStream.Write(keyframe.rotation);
-                memStream.Write(keyframe.scale);
-                memStream.Write7BitEncodedInt(keyframe.seqNum);
-                memStream.WriteSTString(keyframe.type);
-                memStream.Write7BitEncodedInt(keyframe.msToNext);
-                memStream.WriteSTString(keyframe.smoothingType);
+                baseMissionStream.WriteSTString(shape.type);
+                //memStream.WriteSTString(shape.name);
+                baseMissionStream.Write(shape.position);
+                baseMissionStream.Write(shape.rotation);
+                baseMissionStream.Write(shape.scale);
             }
+
+            // Items
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->items.size());
+            for (auto &item: mMission->items)
+            {
+                baseMissionStream.WriteSTString(item.type);
+                //memStream.WriteCString(item.name);
+                baseMissionStream.Write(item.position);
+                baseMissionStream.Write(item.rotation);
+                baseMissionStream.Write(item.scale);
+                baseMissionStream.Write(item.rotate);
+            }
+
+            // Geometry
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->geometries.size());
+            for (auto &geometry: mMission->geometries)
+            {
+                baseMissionStream.WriteSTString(geometry.type);
+                //memStream.WriteCString(geometry.name);
+                baseMissionStream.Write(geometry.position);
+                baseMissionStream.Write(geometry.rotation);
+                baseMissionStream.Write(geometry.scale);
+
+                // TODO: Support embedded geometry
+                baseMissionStream.WriteSTString(geometry.path);
+            }
+
+            // Moving Geometry
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->movingGeometries.size());
+            for (auto &movingGeometry: mMission->movingGeometries)
+            {
+                baseMissionStream.WriteSTString(movingGeometry.type);
+                baseMissionStream.WriteSTString(movingGeometry.subtype);
+                //memStream.WriteSTString(movingGeometry.name);
+                baseMissionStream.Write(movingGeometry.position);
+                baseMissionStream.Write(movingGeometry.rotation);
+                baseMissionStream.Write(movingGeometry.scale);
+                baseMissionStream.Write7BitEncodedInt(movingGeometry.initialTargetPosition);
+                baseMissionStream.Write7BitEncodedInt(movingGeometry.initialPosition);
+                baseMissionStream.Write(movingGeometry.looping);
+
+                // TODO: Support embedded geometry
+                baseMissionStream.WriteSTString(movingGeometry.path);
+                baseMissionStream.Write7BitEncodedInt(movingGeometry.indexInFile);
+
+                baseMissionStream.Write(movingGeometry.triggered);
+                if (movingGeometry.triggered)
+                {
+                    baseMissionStream.WriteSTString(movingGeometry.trigger.type);
+                    baseMissionStream.Write(movingGeometry.trigger.position);
+                    baseMissionStream.Write(movingGeometry.trigger.rotation);
+                    baseMissionStream.Write(movingGeometry.trigger.scale);
+                    baseMissionStream.Write(movingGeometry.trigger.polyhedron);
+                    baseMissionStream.Write7BitEncodedInt(movingGeometry.trigger.targetTime);
+                }
+
+                // Moving Geometry Keyframes
+                baseMissionStream.Write7BitEncodedInt((U32) movingGeometry.keyframes.size());
+                for (auto &keyframe: movingGeometry.keyframes)
+                {
+                    baseMissionStream.Write(keyframe.position);
+                    baseMissionStream.Write(keyframe.rotation);
+                    baseMissionStream.Write(keyframe.scale);
+                    baseMissionStream.Write7BitEncodedInt(keyframe.seqNum);
+                    baseMissionStream.WriteSTString(keyframe.type);
+                    baseMissionStream.Write7BitEncodedInt(keyframe.msToNext);
+                    baseMissionStream.WriteSTString(keyframe.smoothingType);
+                }
+            }
+
+            // Spawn Points
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->spawnPoints.size());
+            for (auto &spawnPoint: mMission->spawnPoints)
+            {
+                baseMissionStream.WriteSTString(spawnPoint.className);
+                baseMissionStream.WriteSTString(spawnPoint.type);
+                //memStream.WriteSTString(spawnPoint.name);
+                baseMissionStream.Write(spawnPoint.position);
+                baseMissionStream.Write(spawnPoint.rotation);
+                baseMissionStream.Write(spawnPoint.scale);
+            }
+
+            // Help Triggers
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->helpTriggers.size());
+            for (auto &helpTrigger: mMission->helpTriggers)
+            {
+                baseMissionStream.Write(helpTrigger.position);
+                baseMissionStream.Write(helpTrigger.rotation);
+                baseMissionStream.Write(helpTrigger.scale);
+                baseMissionStream.Write(helpTrigger.polyhedron);
+                baseMissionStream.WriteLocalizedString(helpTrigger.msg);
+            }
+
+            // Bounds Triggers
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->boundsTriggers.size());
+            for (auto &boundsTrigger: mMission->boundsTriggers)
+            {
+                baseMissionStream.Write(boundsTrigger.position);
+                baseMissionStream.Write(boundsTrigger.rotation);
+                baseMissionStream.Write(boundsTrigger.scale);
+                baseMissionStream.Write(boundsTrigger.polyhedron);
+                baseMissionStream.Write(boundsTrigger.inBounds);
+            }
+
+            // Checkpoints
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->checkpoints.size());
+            for (auto &checkpoint: mMission->checkpoints)
+            {
+                baseMissionStream.Write(checkpoint.position);
+                baseMissionStream.Write(checkpoint.rotation);
+                baseMissionStream.Write(checkpoint.scale);
+                baseMissionStream.Write7BitEncodedInt(checkpoint.sequence);
+
+                // Checkpoint Trigger
+                baseMissionStream.Write(checkpoint.trigger.position);
+                baseMissionStream.Write(checkpoint.trigger.rotation);
+                baseMissionStream.Write(checkpoint.trigger.scale);
+                baseMissionStream.Write(checkpoint.trigger.polyhedron);
+            }
+
+            // Gem Spawns
+            baseMissionStream.Write7BitEncodedInt((U32) mMission->gemSpawns.size());
+            for (auto &gemSpawn: mMission->gemSpawns)
+            {
+                baseMissionStream.WriteSTString(gemSpawn.type);
+                baseMissionStream.Write(gemSpawn.position);
+                baseMissionStream.Write(gemSpawn.rotation);
+                baseMissionStream.Write(gemSpawn.scale);
+            }
+
+            // Preview Camera
+            baseMissionStream.Write(mMission->previewCamera.position);
+            baseMissionStream.Write(mMission->previewCamera.rotation);
         }
 
-        // Spawn Points
-        memStream.Write7BitEncodedInt((U32)mMission->spawnPoints.size());
-        for (auto &spawnPoint: mMission->spawnPoints)
+        // Mission StringTable
+        std::vector<std::string> stringTable = baseMissionStream.GetStringTable();
+        wrappedMissionStream.Write7BitEncodedInt((U32) stringTable.size());
+        for (auto &str: stringTable)
         {
-            memStream.WriteSTString(spawnPoint.className);
-            memStream.WriteSTString(spawnPoint.type);
-            //memStream.WriteSTString(spawnPoint.name);
-            memStream.Write(spawnPoint.position);
-            memStream.Write(spawnPoint.rotation);
-            memStream.Write(spawnPoint.scale);
+            wrappedMissionStream.WriteCString(str);
         }
 
-        // Help Triggers
-        memStream.Write7BitEncodedInt((U32)mMission->helpTriggers.size());
-        for (auto &helpTrigger: mMission->helpTriggers)
-        {
-            memStream.Write(helpTrigger.position);
-            memStream.Write(helpTrigger.rotation);
-            memStream.Write(helpTrigger.scale);
-            memStream.Write(helpTrigger.polyhedron);
-            memStream.WriteLocalizedString(helpTrigger.msg);
-        }
+        U8 *missionBytes = baseMissionStream.GetBytes();
+        size_t missionSize = baseMissionStream.GetSize();
 
-        // Bounds Triggers
-        memStream.Write7BitEncodedInt((U32)mMission->boundsTriggers.size());
-        for (auto &boundsTrigger: mMission->boundsTriggers)
-        {
-            memStream.Write(boundsTrigger.position);
-            memStream.Write(boundsTrigger.rotation);
-            memStream.Write(boundsTrigger.scale);
-            memStream.Write(boundsTrigger.polyhedron);
-            memStream.Write(boundsTrigger.inBounds);
-        }
-
-        // Checkpoints
-        memStream.Write7BitEncodedInt((U32)mMission->checkpoints.size());
-        for (auto &checkpoint: mMission->checkpoints)
-        {
-            memStream.Write(checkpoint.position);
-            memStream.Write(checkpoint.rotation);
-            memStream.Write(checkpoint.scale);
-            memStream.Write7BitEncodedInt(checkpoint.sequence);
-
-            // Checkpoint Trigger
-            memStream.Write(checkpoint.trigger.position);
-            memStream.Write(checkpoint.trigger.rotation);
-            memStream.Write(checkpoint.trigger.scale);
-            memStream.Write(checkpoint.trigger.polyhedron);
-        }
-
-        // Gem Spawns
-        memStream.Write7BitEncodedInt((U32)mMission->gemSpawns.size());
-        for (auto &gemSpawn: mMission->gemSpawns)
-        {
-            memStream.WriteSTString(gemSpawn.type);
-            memStream.Write(gemSpawn.position);
-            memStream.Write(gemSpawn.rotation);
-            memStream.Write(gemSpawn.scale);
-        }
-
-        // Preview Camera
-        memStream.Write(mMission->previewCamera.position);
-        memStream.Write(mMission->previewCamera.rotation);
+        // Write the mission file
+        wrappedMissionStream.WriteBytes((char *) missionBytes, missionSize);
     }
 
-    size_t missionSizePos = file.GetPosition();
-    file.Write((U32)0); // Fill this out later
-
-    // Mission StringTable
-    std::vector<std::string> stringTable = memStream.GetStringTable();
-    file.Write7BitEncodedInt((U32)stringTable.size());
-    for (auto &str: stringTable)
-    {
-        file.WriteCString(str);
-    }
-
-    U8* missionBytes = memStream.GetBytes();
-    size_t missionSize = memStream.GetSize();
-
-    // Write the mission file
-    file.WriteBytes((char*)missionBytes, missionSize);
-
-    // Write the current offset to allow skipping the mission when reading
-    size_t currPos = file.GetPosition();
-    file.Seek(missionSizePos);
-    file.Write((U32)currPos);
-    file.Seek(currPos);
+    U8 *wrappedMissionBytes = wrappedMissionStream.GetBytes();
+    size_t wrappedMissionSize = wrappedMissionStream.GetSize();
+    file.Write7BitEncodedInt((U32)wrappedMissionSize);
+    file.WriteBytes((char*)wrappedMissionBytes, wrappedMissionSize);
 
     return true;
 }
