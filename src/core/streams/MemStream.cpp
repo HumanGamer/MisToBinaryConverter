@@ -49,7 +49,7 @@ size_t MemStream::GetPosition()
     return mPosition;
 }
 
-bool MemStream::ReadInternal(char *data, size_t size)
+bool MemStream::ReadBytes(char *data, size_t size)
 {
     if (mPosition + size > mBufferSize)
         return false;
@@ -59,7 +59,7 @@ bool MemStream::ReadInternal(char *data, size_t size)
     return true;
 }
 
-bool MemStream::WriteInternal(const char *data, size_t size)
+bool MemStream::WriteBytes(const char *data, size_t size)
 {
     if (mPosition + size > mBufferSize)
     {

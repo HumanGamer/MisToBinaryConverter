@@ -17,11 +17,12 @@ public:
     size_t GetFileSize();
     size_t GetPosition() override;
 
+    bool ReadBytes(char* data, size_t size) override;
+    bool WriteBytes(const char* data, size_t size) override;
+
 protected:
     std::fstream mStream;
 
 private:
-    bool ReadInternal(char* data, size_t size) override;
-    bool WriteInternal(const char* data, size_t size) override;
     bool SeekInternal(size_t offset, SeekDirection direction) override;
 };

@@ -2,7 +2,7 @@
 
 bool Stream::WriteString(const std::string &data)
 {
-    return this->WriteInternal(data.c_str(), data.length());
+    return this->WriteBytes(data.c_str(), data.length());
 }
 
 bool Stream::WriteCString(const std::string &data)

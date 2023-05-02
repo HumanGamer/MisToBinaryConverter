@@ -35,14 +35,17 @@ public:
     template<typename T>
     bool Read(T* data)
     {
-        return this->ReadInternal((char*)data, sizeof(T));
+        return this->ReadBytes((char*)data, sizeof(T));
     }
 
     template<typename T>
     bool Write(T data)
     {
-        return this->WriteInternal((char*)&data, sizeof(T));
+        return this->WriteBytes((char*)&data, sizeof(T));
     }
+
+    virtual bool ReadBytes(char* data, size_t size) = 0;
+    virtual bool WriteBytes(const char* data, size_t size) = 0;
 
     bool WriteString(const std::string &data);
     bool WriteCString(const std::string &data);
@@ -50,7 +53,5 @@ public:
     bool WriteLocalizedString(const LocalizedString &data);
 
 private:
-    virtual bool ReadInternal(char* data, size_t size) = 0;
-    virtual bool WriteInternal(const char* data, size_t size) = 0;
     virtual bool SeekInternal(size_t offset, SeekDirection direction) = 0;
 };
