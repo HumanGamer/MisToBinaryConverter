@@ -22,13 +22,13 @@ bool LevelFile::Save(const char *filename)
     if (!file.Open(filename, FileStream::OpenMode_Write))
         return false;
 
-    // TODO: Use a string table for strings
-
     file.WriteString("MBLV");
     file.Write<uint32_t>(0); // global version
 
     file.WriteCString("ultra"); // game string to determine which game this level is for in case special features are needed
     file.Write<uint32_t>(0); // ultra version
+
+    // TODO: Maybe use a string table for strings?
 
     // mission info
     file.WriteLocalizedString(mMission->info.name);
@@ -123,8 +123,7 @@ bool LevelFile::Save(const char *filename)
             file.Write(movingGeometry.trigger.rotation);
             file.Write(movingGeometry.trigger.scale);
 
-            // TODO: Maybe do this without strings?
-            file.WriteCString(movingGeometry.trigger.polyhedron);
+            file.Write(movingGeometry.trigger.polyhedron);
 
             file.Write(movingGeometry.trigger.targetTime);
         }
@@ -163,8 +162,7 @@ bool LevelFile::Save(const char *filename)
         file.Write(helpTrigger.rotation);
         file.Write(helpTrigger.scale);
 
-        // TODO: Maybe do this without strings?
-        file.WriteCString(helpTrigger.polyhedron);
+        file.Write(helpTrigger.polyhedron);
 
         file.WriteLocalizedString(helpTrigger.msg);
     }
@@ -177,8 +175,7 @@ bool LevelFile::Save(const char *filename)
         file.Write(boundsTrigger.rotation);
         file.Write(boundsTrigger.scale);
 
-        // TODO: Maybe do this without strings?
-        file.WriteCString(boundsTrigger.polyhedron);
+        file.Write(boundsTrigger.polyhedron);
 
         file.Write(boundsTrigger.inBounds);
     }
@@ -197,8 +194,7 @@ bool LevelFile::Save(const char *filename)
         file.Write(checkpoint.trigger.rotation);
         file.Write(checkpoint.trigger.scale);
 
-        // TODO: Maybe do this without strings?
-        file.WriteCString(checkpoint.trigger.polyhedron);
+        file.Write(checkpoint.trigger.polyhedron);
     }
 
     // Gem Spawns

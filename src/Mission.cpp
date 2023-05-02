@@ -104,7 +104,7 @@ void Mission::debugPrint()
         std::cout << "\tposition: " << trigger.position.x << ", " << trigger.position.y << ", " << trigger.position.z << std::endl;
         std::cout << "\trotation: " << trigger.rotation.x << ", " << trigger.rotation.y << ", " << trigger.rotation.z << ", " << trigger.rotation.angle << std::endl;
         std::cout << "\tscale: " << trigger.scale.x << ", " << trigger.scale.y << ", " << trigger.scale.z << std::endl;
-        std::cout << "\tpolyhedron: " << trigger.polyhedron << std::endl;
+        std::cout << "\tpolyhedron: " << trigger.polyhedron.str() << std::endl;
         std::cout << "\tmessage: " << trigger.msg << std::endl;
         std::cout << ")" << std::endl;
     }
@@ -117,7 +117,7 @@ void Mission::debugPrint()
         std::cout << "\tposition: " << trigger.position.x << ", " << trigger.position.y << ", " << trigger.position.z << std::endl;
         std::cout << "\trotation: " << trigger.rotation.x << ", " << trigger.rotation.y << ", " << trigger.rotation.z << ", " << trigger.rotation.angle << std::endl;
         std::cout << "\tscale: " << trigger.scale.x << ", " << trigger.scale.y << ", " << trigger.scale.z << std::endl;
-        std::cout << "\tpolyhedron: " << trigger.polyhedron << std::endl;
+        std::cout << "\tpolyhedron: " << trigger.polyhedron.str() << std::endl;
         std::cout << "\tinBounds: " << (trigger.inBounds ? "true" : "false") << std::endl;
         std::cout << ")" << std::endl;
     }
@@ -146,7 +146,7 @@ void Mission::debugPrint()
             std::cout << "\t\tposition: " << geometry.trigger.position.x << ", " << geometry.trigger.position.y << ", " << geometry.trigger.position.z << std::endl;
             std::cout << "\t\trotation: " << geometry.trigger.rotation.x << ", " << geometry.trigger.rotation.y << ", " << geometry.trigger.rotation.z << ", " << geometry.trigger.rotation.angle << std::endl;
             std::cout << "\t\tscale: " << geometry.trigger.scale.x << ", " << geometry.trigger.scale.y << ", " << geometry.trigger.scale.z << std::endl;
-            std::cout << "\t\tpolyhedron: " << geometry.trigger.polyhedron << std::endl;
+            std::cout << "\t\tpolyhedron: " << geometry.trigger.polyhedron.str() << std::endl;
             std::cout << "\t\ttargetTime: " << geometry.trigger.targetTime << std::endl;
             std::cout << "\t)" << std::endl;
         }
@@ -183,7 +183,7 @@ void Mission::debugPrint()
         std::cout << "\t\tposition: " << checkpoint.trigger.position.x << ", " << checkpoint.trigger.position.y << ", " << checkpoint.trigger.position.z << std::endl;
         std::cout << "\t\trotation: " << checkpoint.trigger.rotation.x << ", " << checkpoint.trigger.rotation.y << ", " << checkpoint.trigger.rotation.z << ", " << checkpoint.trigger.rotation.angle << std::endl;
         std::cout << "\t\tscale: " << checkpoint.trigger.scale.x << ", " << checkpoint.trigger.scale.y << ", " << checkpoint.trigger.scale.z << std::endl;
-        std::cout << "\t\tpolyhedron: " << checkpoint.trigger.polyhedron << std::endl;
+        std::cout << "\t\tpolyhedron: " << checkpoint.trigger.polyhedron.str() << std::endl;
         std::cout << "\t)" << std::endl;
         std::cout << ")" << std::endl;
     }

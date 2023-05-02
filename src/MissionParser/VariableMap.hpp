@@ -23,6 +23,7 @@ namespace MissionParser
         std::string getString(const std::string& name);
         Point getPoint(const std::string& name);
         AngAxis getAngAxis(const std::string& name);
+        Polyhedron getPolyhedron(const std::string& name);
         bool getBool(const std::string& name);
         U32 getInt(const std::string& name);
 

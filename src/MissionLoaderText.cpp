@@ -278,7 +278,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                             trigger.rotation = variables.getAngAxis("rotation");
                             trigger.scale = variables.getPoint("scale");
                             trigger.type = variables.getString("dataBlock");
-                            trigger.polyhedron = variables.getString("polyhedron");
+                            trigger.polyhedron = variables.getPolyhedron("polyhedron");
                             trigger.targetTime = variables.getInt("targetTime");
                             movingGeometry.trigger = trigger;
                             continue;
@@ -323,7 +323,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                                 trigger.position = variables.getPoint("position");
                                 trigger.rotation = variables.getAngAxis("rotation");
                                 trigger.scale = variables.getPoint("scale");
-                                trigger.polyhedron = variables.getString("polyhedron");
+                                trigger.polyhedron = variables.getPolyhedron("polyhedron");
                                 checkpoint.trigger = trigger;
                                 checkpoint.sequence = variables.getInt("sequence");
                                 mission->checkpoints.push_back(checkpoint);
@@ -346,7 +346,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                     trigger.position = variables.getPoint("position");
                     trigger.rotation = variables.getAngAxis("rotation");
                     trigger.scale = variables.getPoint("scale");
-                    trigger.polyhedron = variables.getString("polyhedron");
+                    trigger.polyhedron = variables.getPolyhedron("polyhedron");
                     trigger.msg = variables.getString("text");
                     mission->helpTriggers.push_back(trigger);
                     continue;
@@ -358,7 +358,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                     trigger.position = variables.getPoint("position");
                     trigger.rotation = variables.getAngAxis("rotation");
                     trigger.scale = variables.getPoint("scale");
-                    trigger.polyhedron = variables.getString("polyhedron");
+                    trigger.polyhedron = variables.getPolyhedron("polyhedron");
                     trigger.inBounds = true;
                     mission->boundsTriggers.push_back(trigger);
                     continue;
@@ -370,7 +370,7 @@ bool populateMissionStructure(const std::vector<MissionParser::ObjectDefinition>
                     trigger.position = variables.getPoint("position");
                     trigger.rotation = variables.getAngAxis("rotation");
                     trigger.scale = variables.getPoint("scale");
-                    trigger.polyhedron = variables.getString("polyhedron");
+                    trigger.polyhedron = variables.getPolyhedron("polyhedron");
                     trigger.inBounds = false;
                     mission->boundsTriggers.push_back(trigger);
                     continue;

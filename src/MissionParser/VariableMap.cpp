@@ -64,6 +64,20 @@ namespace MissionParser
         return a;
     }
 
+    Polyhedron VariableMap::getPolyhedron(const std::string &name)
+    {
+        RETURN_IF_NOT_EXIST(Polyhedron());
+
+        Polyhedron p;
+        sscanf_s(it->second.c_str(), "%f %f %f %f %f %f %f %f %f %f %f %f",
+            &p.origin.x, &p.origin.y, &p.origin.z,
+            &p.points[0].x, &p.points[0].y, &p.points[0].z,
+            &p.points[1].x, &p.points[1].y, &p.points[1].z,
+            &p.points[2].x, &p.points[2].y, &p.points[2].z);
+
+        return p;
+    }
+
     bool VariableMap::getBool(const std::string& name)
     {
         RETURN_IF_NOT_EXIST("");

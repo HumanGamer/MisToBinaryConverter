@@ -94,8 +94,7 @@ struct Mission
             AngAxis rotation;
             Point scale;
 
-            // TODO: Maybe do this without strings?
-            std::string polyhedron;
+            Polyhedron polyhedron;
 
             S32 targetTime;
         };
@@ -131,7 +130,7 @@ struct Mission
         Point position;
         AngAxis rotation;
         Point scale;
-        std::string polyhedron;
+        Polyhedron polyhedron;
 
         LocalizedString msg;
     };
@@ -142,7 +141,7 @@ struct Mission
         Point position;
         AngAxis rotation;
         Point scale;
-        std::string polyhedron;
+        Polyhedron polyhedron;
 
         bool inBounds;
     };
@@ -160,7 +159,7 @@ struct Mission
             Point position;
             AngAxis rotation;
             Point scale;
-            std::string polyhedron;
+            Polyhedron polyhedron;
         };
         Trigger trigger;
     };
