@@ -70,11 +70,11 @@ bool MemStream::WriteInternal(const char *data, size_t size)
         delete[] mBuffer;
         mBuffer = newBuffer;
         mBufferSize = newBufferSize;
-        mSize = newSize;
     }
 
     memcpy(mBuffer + mPosition, data, size);
     mPosition += size;
+    mSize += size;
     return true;
 }
 
