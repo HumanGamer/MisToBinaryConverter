@@ -15,8 +15,8 @@ set(MAIN_SRC
     MissionParser/Statement.cpp
     MissionParser/ObjectDefinition.cpp
     MissionParser/VariableMap.cpp
+    MissionParser/MissionLoaderText.cpp
     Mission.cpp
-    MissionLoaderText.cpp
     LevelFile.cpp
 
     # Headers
@@ -33,8 +33,8 @@ set(MAIN_SRC
     MissionParser/StatementKinds.inc
     MissionParser/ObjectDefinition.hpp
     MissionParser/VariableMap.hpp
+    MissionParser/MissionLoaderText.hpp
     Mission.hpp
-    MissionLoaderText.hpp
     LevelFile.hpp
 )
 

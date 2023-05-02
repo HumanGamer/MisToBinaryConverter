@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Mission.hpp"
-#include "MissionLoaderText.hpp"
+#include <MissionParser/MissionLoaderText.hpp>
 #include "LevelFile.hpp"
 
 int main(int argc, const char** argv)
