@@ -47,6 +47,26 @@ public:
     virtual bool ReadBytes(char* data, size_t size) = 0;
     virtual bool WriteBytes(const char* data, size_t size) = 0;
 
+    bool Read7BitEncodedInt(S32* ret)
+    {
+        return Read7BitEncodedIntInternal(ret, true);
+    }
+
+    bool Write7BitEncodedInt(S32 value)
+    {
+        return Write7BitEncodedIntInternal(value, true);
+    }
+
+    bool Read7BitEncodedInt(U32* ret)
+    {
+        return Read7BitEncodedIntInternal((S32*)ret, false);
+    }
+
+    bool Write7BitEncodedInt(U32 value)
+    {
+        return Write7BitEncodedIntInternal((S32)value, false);
+    }
+
     bool WriteString(const std::string &data);
     bool WriteCString(const std::string &data);
     bool WriteLenString(const std::string &data);
@@ -54,4 +74,7 @@ public:
 
 private:
     virtual bool SeekInternal(size_t offset, SeekDirection direction) = 0;
+
+    bool Stream::Read7BitEncodedIntInternal(S32* ret, bool hasSign);
+    bool Stream::Write7BitEncodedIntInternal(S32 value, bool writeSign);
 };
