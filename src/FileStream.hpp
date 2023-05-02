@@ -36,15 +36,13 @@ public:
     template<typename T>
     bool Read(T* data)
     {
-        mStream.read((char*)data, sizeof(T));
-        return !mStream.fail();
+        return this->ReadInternal((char*)data, sizeof(T));
     }
 
     template<typename T>
     bool Write(T data)
     {
-        mStream.write((char*)&data, sizeof(T));
-        return !mStream.fail();
+        return this->WriteInternal((char*)&data, sizeof(T));
     }
 
     bool WriteString(const std::string &data);
@@ -54,4 +52,8 @@ public:
 
 protected:
     std::fstream mStream;
+
+private:
+    bool ReadInternal(char* data, size_t size);
+    bool WriteInternal(const char* data, size_t size);
 };

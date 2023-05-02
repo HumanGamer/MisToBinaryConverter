@@ -71,6 +71,18 @@ size_t FileStream::GetFileSize()
     return size;
 }
 
+bool FileStream::ReadInternal(char *data, size_t size)
+{
+    mStream.read(data, size);
+    return !mStream.fail();
+}
+
+bool FileStream::WriteInternal(const char *data, size_t size)
+{
+    mStream.write(data, size);
+    return !mStream.fail();
+}
+
 bool FileStream::WriteString(const std::string &data)
 {
     mStream.write(data.c_str(), data.length());
