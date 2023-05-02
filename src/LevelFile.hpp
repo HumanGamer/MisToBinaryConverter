@@ -21,5 +21,5 @@ private:
 
     bool GetMissionBytes(std::vector<U8> &outData);
     bool GetCompressedMissionBytes(std::vector<U8> &outData);
-    bool WriteMission(Stream& stream);
+    bool WriteMission(Stream& stream, bool compressed = true);
 };

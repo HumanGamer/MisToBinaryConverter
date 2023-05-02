@@ -23,7 +23,7 @@ public:
     };
 
 public:
-    Stream() = default;
+    Stream();
     virtual ~Stream() = default;
 
     bool Seek(size_t offset, SeekDirection direction = SeekDirection_Begin)
@@ -86,6 +86,9 @@ public:
     {
         // Thanks Rartrin for this function
 
+        if (!mEnableCompression)
+            return RawWrite(data);
+
         //If unable to cast to an integer
         if(data != (S32)data)
         {
@@ -131,6 +134,10 @@ public:
     bool Read<F32>(F32* data)
     {
         // Thanks Rartrin for this function
+
+        if (!mEnableCompression)
+            return RawRead(data);
+
         U8 prefix;
         if (!RawRead(&prefix))
             return false;
@@ -190,24 +197,32 @@ public:
     template<>
     bool Read<S32>(S32* data)
     {
+        if (!mEnableCompression)
+            return RawRead(data);
         return Read7BitEncodedIntInternal(data, true);
     }
 
     template<>
     bool Write<S32>(S32 data)
     {
+        if (!mEnableCompression)
+            return RawWrite(data);
         return Write7BitEncodedIntInternal(data, true);
     }
 
     template<>
     bool Read<U32>(U32* data)
     {
+        if (!mEnableCompression)
+            return RawRead(data);
         return Read7BitEncodedIntInternal((S32*)data, false);
     }
 
     template<>
     bool Write<U32>(U32 data)
     {
+        if (!mEnableCompression)
+            return RawWrite(data);
         return Write7BitEncodedIntInternal((S32)data, false);
     }
 
@@ -223,8 +238,12 @@ public:
         return mStringTable;
     }
 
+    void EnableCompression() { mEnableCompression = true; }
+    void DisableCompression() { mEnableCompression = false; }
+
 protected:
     std::vector<std::string> mStringTable;
+    bool mEnableCompression;
 
 private:
     virtual bool SeekInternal(size_t offset, SeekDirection direction) = 0;

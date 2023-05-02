@@ -24,13 +24,17 @@ bool LevelFile::Save(const char *filename)
     if (!file.Open(filename, FileStream::OpenMode_Write))
         return false;
 
+    file.DisableCompression();
+
     file.WriteString("MBLV");
-    file.RawWrite<U32>(0); // global version
+    file.Write<U32>(0); // global version
 
     file.WriteCString("ultra"); // game string to determine which game this level is for in case special features are needed
-    file.RawWrite<U32>(0); // ultra version
+    file.Write<U32>(0); // ultra version
 
-    this->WriteMission(file);
+    file.EnableCompression();
+
+    this->WriteMission(file, true);
 
     return true;
 }
@@ -250,10 +254,13 @@ bool LevelFile::GetCompressedMissionBytes(std::vector<U8> &outData)
     return true;
 }
 
-bool LevelFile::WriteMission(Stream& stream)
+bool LevelFile::WriteMission(Stream& stream, bool compressed)
 {
     std::vector<U8> mission;
-    this->GetCompressedMissionBytes(mission);
+    if (compressed)
+        this->GetCompressedMissionBytes(mission);
+    else
+        this->GetMissionBytes(mission);
 
     stream.Write<U32>(mission.size());
     stream.WriteBytes((char*)mission.data(), mission.size());

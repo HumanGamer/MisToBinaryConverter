@@ -1,5 +1,10 @@
 #include "Stream.hpp"
 
+Stream::Stream()
+{
+    mEnableCompression = true;
+}
+
 bool Stream::WriteSTString(const std::string &data)
 {
     auto it = std::find(mStringTable.begin(), mStringTable.end(), data);
