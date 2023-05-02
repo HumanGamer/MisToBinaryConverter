@@ -45,6 +45,18 @@ public:
         return this->WriteBytes((char*)&data, sizeof(T));
     }
 
+    template<typename T>
+    bool RawRead(T* data)
+    {
+        return this->ReadBytes((char*)data, sizeof(T));
+    }
+
+    template<typename T>
+    bool RawWrite(T data)
+    {
+        return this->WriteBytes((char*)&data, sizeof(T));
+    }
+
     template<>
     bool Write<Point>(Point data)
     {
@@ -78,7 +90,7 @@ public:
         if(data != (S32)data)
         {
             U8 prefix = 0b111<<5;
-            return Write(prefix) && Write(*(U32*)&data);
+            return RawWrite(prefix) && RawWrite(*(U32*)&data);
         }
         else
         {
@@ -87,28 +99,28 @@ public:
             {
                 U8 prefix = 0b100<<5;
                 prefix |= i&0x1F;
-                return Write(prefix);
+                return RawWrite(prefix);
             }
             else if(i == (S8)i)
             {
                 U8 prefix = 0b000<<5;
-                return Write(prefix) && Write<S8>(i);
+                return RawWrite(prefix) && RawWrite<S8>(i);
             }
             else if(i == (S16)i)
             {
                 U8 prefix = 0b001<<5;
-                return Write(prefix) && Write<S16>(i);
+                return RawWrite(prefix) && RawWrite<S16>(i);
             }
             else if(i == ((i<<8)>>8))//Int24 (signed)
             {
                 U8 prefix = 0b010<<5;
                 S24 s = {i};
-                return Write(prefix) && Write(s);
+                return RawWrite(prefix) && RawWrite(s);
             }
             else
             {
                 U8 prefix = 0b011<<5;
-                return Write(prefix) && Write<S32>(i);
+                return RawWrite(prefix) && RawWrite<S32>(i);
             }
         }
 
@@ -120,7 +132,7 @@ public:
     {
         // Thanks Rartrin for this function
         U8 prefix;
-        if (!Read(&prefix))
+        if (!RawRead(&prefix))
             return false;
 
         switch(prefix>>5)
@@ -128,7 +140,7 @@ public:
             case 0b000:
             {
                 S8 d;
-                if (!Read(&d))
+                if (!RawRead(&d))
                     return false;
                 *data = d;
                 return true;
@@ -136,7 +148,7 @@ public:
             case 0b001:
             {
                 S16 d;
-                if (!Read(&d))
+                if (!RawRead(&d))
                     return false;
                 *data = d;
                 return true;
@@ -144,7 +156,7 @@ public:
             case 0b010:
             {
                 S24 d;
-                if (!Read(&d))
+                if (!RawRead(&d))
                     return false;
                 *data = d.data;
                 return true;
@@ -152,7 +164,7 @@ public:
             case 0b011:
             {
                 S32 d;
-                if (!Read(&d))
+                if (!RawRead(&d))
                     return false;
                 *data = d;
                 return true;
@@ -160,7 +172,7 @@ public:
             case 0b111:
             {
                 // Raw Float Bits
-                return Read<U32>((U32*)data);
+                return RawRead<U32>((U32*)data);
             }
             case 0b100:
             {
@@ -175,24 +187,28 @@ public:
     virtual bool ReadBytes(char* data, size_t size) = 0;
     virtual bool WriteBytes(const char* data, size_t size) = 0;
 
-    bool Read7BitEncodedInt(S32* ret)
+    template<>
+    bool Read<S32>(S32* data)
     {
-        return Read7BitEncodedIntInternal(ret, true);
+        return Read7BitEncodedIntInternal(data, true);
     }
 
-    bool Write7BitEncodedInt(S32 value)
+    template<>
+    bool Write<S32>(S32 data)
     {
-        return Write7BitEncodedIntInternal(value, true);
+        return Write7BitEncodedIntInternal(data, true);
     }
 
-    bool Read7BitEncodedInt(U32* ret)
+    template<>
+    bool Read<U32>(U32* data)
     {
-        return Read7BitEncodedIntInternal((S32*)ret, false);
+        return Read7BitEncodedIntInternal((S32*)data, false);
     }
 
-    bool Write7BitEncodedInt(U32 value)
+    template<>
+    bool Write<U32>(U32 data)
     {
-        return Write7BitEncodedIntInternal((S32)value, false);
+        return Write7BitEncodedIntInternal((S32)data, false);
     }
 
     bool WriteSTString(const std::string &data);
