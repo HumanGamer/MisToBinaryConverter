@@ -15,7 +15,7 @@ bool Stream::WriteCString(const std::string &data)
 
 bool Stream::WriteLenString(const std::string &data)
 {
-    this->Write<uint32_t>(data.length());
+    this->Write7BitEncodedInt((U32)data.length());
     return this->WriteString(data);
 }
 
