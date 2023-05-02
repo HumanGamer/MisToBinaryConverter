@@ -1,5 +1,17 @@
 #include "Stream.hpp"
 
+bool Stream::WriteSTString(const std::string &data)
+{
+    auto it = std::find(mStringTable.begin(), mStringTable.end(), data);
+    if(it != mStringTable.end())
+    {
+        //String already in table
+        return this->Write7BitEncodedInt((U32)(it - mStringTable.begin()));
+    }
+    mStringTable.push_back(data);
+    return this->Write7BitEncodedInt((U32)mStringTable.size() - 1);
+}
+
 bool Stream::WriteString(const std::string &data)
 {
     return this->WriteBytes(data.c_str(), data.length());
@@ -15,7 +27,9 @@ bool Stream::WriteCString(const std::string &data)
 
 bool Stream::WriteLenString(const std::string &data)
 {
-    this->Write7BitEncodedInt((U32)data.length());
+    if (!this->Write7BitEncodedInt((U32)data.length()))
+        return false;
+
     return this->WriteString(data);
 }
 

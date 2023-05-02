@@ -2,6 +2,7 @@
 
 #include <platform/types.h>
 #include <string>
+#include <vector>
 #include <core/Strings.hpp>
 
 class Stream
@@ -67,14 +68,24 @@ public:
         return Write7BitEncodedIntInternal((S32)value, false);
     }
 
+    bool WriteSTString(const std::string &data);
+
     bool WriteString(const std::string &data);
     bool WriteCString(const std::string &data);
     bool WriteLenString(const std::string &data);
     bool WriteLocalizedString(const LocalizedString &data);
 
+    std::vector<std::string> GetStringTable() const
+    {
+        return mStringTable;
+    }
+
+protected:
+    std::vector<std::string> mStringTable;
+
 private:
     virtual bool SeekInternal(size_t offset, SeekDirection direction) = 0;
 
-    bool Stream::Read7BitEncodedIntInternal(S32* ret, bool hasSign);
-    bool Stream::Write7BitEncodedIntInternal(S32 value, bool writeSign);
+    bool Read7BitEncodedIntInternal(S32* ret, bool hasSign);
+    bool Write7BitEncodedIntInternal(S32 value, bool writeSign);
 };
