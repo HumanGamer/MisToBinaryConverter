@@ -11,6 +11,7 @@ set(MAIN_SRC
     core/streams/Stream.cpp
     core/streams/FileStream.cpp
     core/streams/MemStream.cpp
+    core/Compression.cpp
     MissionParser/Tokenizer.cpp
     MissionParser/Parser.cpp
     MissionParser/Statement.cpp
@@ -28,6 +29,7 @@ set(MAIN_SRC
     core/streams/FileStream.hpp
     core/streams/MemStream.hpp
     core/CaseInsensitiveMap.hpp
+    core/Compression.hpp
     MissionParser/Tokenizer.hpp
     MissionParser/TokenTypes.inc
     MissionParser/Parser.hpp

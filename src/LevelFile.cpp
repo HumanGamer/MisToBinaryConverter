@@ -1,7 +1,7 @@
 #include "LevelFile.hpp"
 #include <core/streams/MemStream.hpp>
 #include <core/streams/FileStream.hpp>
-#include <zlib.h>
+#include <core/Compression.hpp>
 
 LevelFile::LevelFile()
 {
@@ -227,8 +227,13 @@ bool LevelFile::Save(const char *filename)
 
     U8 *wrappedMissionBytes = wrappedMissionStream.GetBytes();
     size_t wrappedMissionSize = wrappedMissionStream.GetSize();
-    file.Write7BitEncodedInt((U32)wrappedMissionSize);
-    file.WriteBytes((char*)wrappedMissionBytes, wrappedMissionSize);
+    std::vector<U8> wrappedMissionBytesVector(wrappedMissionBytes, wrappedMissionBytes + wrappedMissionSize);
+
+    std::vector<U8> compressedMissionBytes;
+    CompressMemory(wrappedMissionBytesVector, compressedMissionBytes);
+
+    file.Write7BitEncodedInt((U32)compressedMissionBytes.size());
+    file.WriteBytes((char*)compressedMissionBytes.data(), compressedMissionBytes.size());
 
     return true;
 }
