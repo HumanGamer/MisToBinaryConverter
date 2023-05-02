@@ -25,10 +25,10 @@ bool LevelFile::Save(const char *filename)
         return false;
 
     file.WriteString("MBLV");
-    file.Write<U32>(0); // global version
+    file.RawWrite<U32>(0); // global version
 
     file.WriteCString("ultra"); // game string to determine which game this level is for in case special features are needed
-    file.Write<U32>(0); // ultra version
+    file.RawWrite<U32>(0); // ultra version
 
     MemStream wrappedMissionStream;
     {
