@@ -30,6 +30,13 @@ bool LevelFile::Save(const char *filename)
     file.WriteCString("ultra"); // game string to determine which game this level is for in case special features are needed
     file.RawWrite<U32>(0); // ultra version
 
+    this->WriteMission(file);
+
+    return true;
+}
+
+bool LevelFile::GetMissionBytes(std::vector<U8> &outData)
+{
     MemStream wrappedMissionStream;
     {
         MemStream baseMissionStream;
@@ -225,18 +232,31 @@ bool LevelFile::Save(const char *filename)
         wrappedMissionStream.WriteBytes((char *) missionBytes, missionSize);
     }
 
-    U8 *wrappedMissionBytes = wrappedMissionStream.GetBytes();
-    size_t wrappedMissionSize = wrappedMissionStream.GetSize();
-    std::vector<U8> wrappedMissionBytesVector(wrappedMissionBytes, wrappedMissionBytes + wrappedMissionSize);
+    U8* buffer = wrappedMissionStream.GetBytes();
+    size_t size = wrappedMissionStream.GetSize();
 
-    std::vector<U8> compressedMissionBytes;
-    CompressMemory(wrappedMissionBytesVector, compressedMissionBytes);
+    outData = std::vector<U8>(buffer, buffer + size);
 
-    file.Write<U32>(compressedMissionBytes.size());
-    file.WriteBytes((char*)compressedMissionBytes.data(), compressedMissionBytes.size());
+    return true;
+}
 
-//    file.Write7BitEncodedInt((U32)wrappedMissionSize);
-//    file.WriteBytes((char*)wrappedMissionBytes, wrappedMissionSize);
+bool LevelFile::GetCompressedMissionBytes(std::vector<U8> &outData)
+{
+    std::vector<U8> missionBytes;
+    this->GetMissionBytes(missionBytes);
+
+    CompressMemory(missionBytes, outData);
+
+    return true;
+}
+
+bool LevelFile::WriteMission(Stream& stream)
+{
+    std::vector<U8> mission;
+    this->GetCompressedMissionBytes(mission);
+
+    stream.Write<U32>(mission.size());
+    stream.WriteBytes((char*)mission.data(), mission.size());
 
     return true;
 }
