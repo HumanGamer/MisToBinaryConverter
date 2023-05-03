@@ -81,7 +81,7 @@ public:
                Write(data.points[2]);
     }
 
-    template<>
+    /*template<>
     bool Write<F32>(F32 data)
     {
         // Thanks Rartrin for this function
@@ -189,6 +189,75 @@ public:
         }
         //throw "Invalid type";
         return false;
+    }*/
+
+    template<> bool Write<F32>(F32 data)
+    {
+        // Thanks Rartrin for this function
+
+        if (!mEnableCompression)
+            return RawWrite(data);
+
+        if (data == -1)
+        {
+            return RawWrite<U8>(0x7F);
+        }
+
+        if(data == 0)
+        {
+            return RawWrite<U8>(0);
+        }
+        //If unable to cast to an integer
+        if(data != (S32)data)
+        {
+            U8 prefix = 0x80;
+            return RawWrite(prefix) && RawWrite(*(U32*)&data);
+        }
+        int i = (int)data;
+
+        int neededDataCheck = i<0 ? ~i : i;
+
+        int b=28;
+        while(((neededDataCheck>>b)&0x7F) == 0)
+        {
+            b-=7;
+        }
+        for(; b>=7; b-=7)
+        {
+            if(!RawWrite<U8>((U8)(i>>b) | 0x80))
+                return false;
+        }
+        if(!RawWrite<U8>(i&0x7F))
+            return false;
+        return true;
+    }
+
+    template<> bool Read<F32>(F32* data)
+    {
+        // Thanks Rartrin for this function
+
+        if (!mEnableCompression)
+            return RawRead(data);
+
+        U8 val;
+        if(!RawRead(&val))
+            return false;
+
+        if(val == 0x80)
+        {
+            // Raw Float Bits
+            return RawRead<U32>((U32*)data);
+        }
+
+        int ret = val&0x7F;
+        while(val&0x80)
+        {
+            if(!RawRead(&val))
+                return false;
+            ret = (ret<<7) | (val&0x7F);
+        }
+        *data = ret;
+        return true;
     }
 
     virtual bool ReadBytes(char* data, size_t size) = 0;
