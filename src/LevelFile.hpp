@@ -16,10 +16,18 @@ public:
     void SetMission(Mission* mission) { mMission = mission; }
     Mission* GetMission() { return mMission; }
 
+protected:
+    enum CompressionFlags
+    {
+        NoCompression = 0,
+        ZlibCompression = 1,
+        ValueCompression = 2
+    };
+
 private:
     Mission* mMission;
 
-    bool GetMissionBytes(std::vector<U8> &outData);
-    bool GetCompressedMissionBytes(std::vector<U8> &outData);
-    bool WriteMission(Stream& stream, bool compressed = true);
+    bool GetMissionBytes(std::vector<U8> &outData, bool valueCompression);
+    bool GetCompressedMissionBytes(std::vector<U8> &outData, bool valueCompression);
+    bool WriteMission(Stream& stream, bool zlibCompression, bool valueCompression);
 };

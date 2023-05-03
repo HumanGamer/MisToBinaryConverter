@@ -24,6 +24,15 @@ bool LevelFile::Save(const char *filename)
     if (!file.Open(filename, FileStream::OpenMode_Write))
         return false;
 
+    bool zlibCompression = true;
+    bool valueCompression = true;
+
+    U8 flags = NoCompression;
+    if (zlibCompression)
+        flags |= ZlibCompression;
+    if (valueCompression)
+        flags |= ValueCompression;
+
     file.DisableCompression();
     {
         // Header
@@ -36,20 +45,34 @@ bool LevelFile::Save(const char *filename)
         // and still have their own versioning.
         file.WriteCString("ultra");
         file.Write<U32>(0); // ultra version
-    }
-    file.EnableCompression();
 
-    this->WriteMission(file, true);
+        file.Write(flags);
+    }
+
+    if (valueCompression)
+        file.EnableCompression();
+
+    this->WriteMission(file, zlibCompression, valueCompression);
 
     return true;
 }
 
-bool LevelFile::GetMissionBytes(std::vector<U8> &outData)
+bool LevelFile::GetMissionBytes(std::vector<U8> &outData, bool valueCompression)
 {
     MemStream wrappedMissionStream;
     {
+        if (valueCompression)
+            wrappedMissionStream.EnableCompression();
+        else
+            wrappedMissionStream.DisableCompression();
+
         MemStream baseMissionStream;
         {
+            if (valueCompression)
+                baseMissionStream.EnableCompression();
+            else
+                baseMissionStream.DisableCompression();
+
             // mission info
             baseMissionStream.WriteLocalizedString(mMission->info.name);
             baseMissionStream.WriteLocalizedString(mMission->info.description);
@@ -249,23 +272,23 @@ bool LevelFile::GetMissionBytes(std::vector<U8> &outData)
     return true;
 }
 
-bool LevelFile::GetCompressedMissionBytes(std::vector<U8> &outData)
+bool LevelFile::GetCompressedMissionBytes(std::vector<U8> &outData, bool valueCompression)
 {
     std::vector<U8> missionBytes;
-    this->GetMissionBytes(missionBytes);
+    this->GetMissionBytes(missionBytes, valueCompression);
 
     CompressMemory(missionBytes, outData);
 
     return true;
 }
 
-bool LevelFile::WriteMission(Stream& stream, bool compressed)
+bool LevelFile::WriteMission(Stream& stream, bool zlibCompression, bool valueCompression)
 {
     std::vector<U8> mission;
-    if (compressed)
-        this->GetCompressedMissionBytes(mission);
+    if (zlibCompression)
+        this->GetCompressedMissionBytes(mission, valueCompression);
     else
-        this->GetMissionBytes(mission);
+        this->GetMissionBytes(mission, valueCompression);
 
     stream.Write<U32>(mission.size());
     stream.WriteBytes((char*)mission.data(), mission.size());
