@@ -3,6 +3,7 @@
 #include <platform/types.h>
 #include <core/streams/stream.hpp>
 #include <mission/mission.hpp>
+#include <interior/interiorResource.hpp>
 
 class LevelFile
 {
@@ -16,6 +17,8 @@ public:
     void SetMission(Mission* mission) { mMission = mission; }
     Mission* GetMission() { return mMission; }
 
+    void SetInteriors(const std::vector<InteriorResource*>& interiors) { mInteriors = interiors; }
+
 protected:
     enum CompressionFlags
     {
@@ -26,4 +29,5 @@ protected:
 
 private:
     Mission* mMission;
+    std::vector<InteriorResource*> mInteriors;
 };

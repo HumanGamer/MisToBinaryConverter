@@ -12,13 +12,14 @@ set(MAIN_SRC
     core/streams/fileStream.cpp
     core/streams/memStream.cpp
     core/compression.cpp
+    mission/mission.cpp
     mission/parser/tokenizer.cpp
     mission/parser/parser.cpp
     mission/parser/statement.cpp
     mission/parser/objectDefinition.cpp
     mission/parser/variableMap.cpp
     mission/parser/textLoader.cpp
-    mission/mission.cpp
+    interior/interiorResource.cpp
     levelFile.cpp
 
     # Headers
@@ -30,6 +31,7 @@ set(MAIN_SRC
     core/streams/memStream.hpp
     core/caseInsensitiveMap.hpp
     core/compression.hpp
+    mission/mission.hpp
     mission/parser/tokenizer.hpp
     mission/parser/tokenTypes.inc
     mission/parser/parser.hpp
@@ -38,7 +40,7 @@ set(MAIN_SRC
     mission/parser/objectDefinition.hpp
     mission/parser/variableMap.hpp
     mission/parser/textLoader.hpp
-    mission/mission.hpp
+    interior/interiorResource.hpp
     levelFile.hpp
 )
 

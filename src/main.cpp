@@ -3,7 +3,8 @@
 #include <mission/mission.hpp>
 #include <mission/parser/textLoader.hpp>
 #include <core/util.hpp>
-#include "levelFile.hpp"
+#include <interior/interiorResource.hpp>
+#include <levelFile.hpp>
 
 int main(int argc, const char** argv)
 {
@@ -47,22 +48,43 @@ int main(int argc, const char** argv)
     for (auto & interiorPath : interiorPaths)
         interiorPath = cleanPath(interiorPath);
 
-    for (auto& paths : interiorPaths)
-    {
-        std::cout << paths << std::endl;
-    }
+//    for (auto& paths : interiorPaths)
+//    {
+//        std::cout << paths << std::endl;
+//    }
 
-    // TODO: Load interiors and pass them to the level file
+    std::vector<InteriorResource*> interiors;
+    for (auto& interior : interiorPaths)
+    {
+        // Make interior path relative to the mission file
+        std::string relativeInteriorPath = getRelativePath(interior, getDirectory(getFullPath(fileName)));
+
+        InteriorResource* interiorResource = new InteriorResource();
+        if (!interiorResource->Load(relativeInteriorPath))
+        {
+            std::cout << "Failed to load interior: " << interior << std::endl;
+            delete interiorResource;
+            return 1;
+        }
+
+        interiors.push_back(interiorResource);
+    }
 
     LevelFile levelFile;
     levelFile.SetMission(&mission);
+    levelFile.SetInteriors(interiors);
     if (!levelFile.Save("test.mblv"))
     {
         std::cout << "Failed to save file" << std::endl;
+        for (auto& interior : interiors)
+            delete interior;
         return 1;
     }
 
     std::cout << "Done!" << std::endl;
+
+    for (auto& interior : interiors)
+        delete interior;
 
     return 0;
 }

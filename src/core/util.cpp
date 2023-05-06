@@ -1,5 +1,6 @@
 #include "util.hpp"
 #include <algorithm>
+#include <filesystem>
 
 bool equalsIgnoreCase(const std::string& s1, const std::string& s2)
 {
@@ -100,4 +101,26 @@ bool containsIgnoreCase(const std::vector<std::string>& list, const std::string&
 //    }
 //
 //    return false;
+}
+
+std::string getFullPath(const std::string& path)
+{
+    std::filesystem::path p = path;
+
+    return std::filesystem::absolute(p).string();
+}
+
+std::string getDirectory(const std::string& path)
+{
+    std::filesystem::path p = path;
+
+    return std::filesystem::absolute(p).parent_path().string();
+}
+
+std::string getRelativePath(const std::string& path, const std::string& relativeTo)
+{
+    std::filesystem::path p = path;
+    std::filesystem::path r = relativeTo;
+
+    return std::filesystem::relative(p, r).string();
 }
