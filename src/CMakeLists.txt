@@ -12,12 +12,12 @@ set(MAIN_SRC
     core/streams/FileStream.cpp
     core/streams/MemStream.cpp
     core/Compression.cpp
-    MissionParser/Tokenizer.cpp
-    MissionParser/Parser.cpp
-    MissionParser/Statement.cpp
-    MissionParser/ObjectDefinition.cpp
-    MissionParser/VariableMap.cpp
-    MissionParser/MissionLoaderText.cpp
+    mission/parser/Tokenizer.cpp
+    mission/parser/Parser.cpp
+    mission/parser/Statement.cpp
+    mission/parser/ObjectDefinition.cpp
+    mission/parser/VariableMap.cpp
+    mission/parser/MissionLoaderText.cpp
     mission/Mission.cpp
     LevelFile.cpp
 
@@ -30,14 +30,14 @@ set(MAIN_SRC
     core/streams/MemStream.hpp
     core/CaseInsensitiveMap.hpp
     core/Compression.hpp
-    MissionParser/Tokenizer.hpp
-    MissionParser/TokenTypes.inc
-    MissionParser/Parser.hpp
-    MissionParser/Statement.hpp
-    MissionParser/StatementKinds.inc
-    MissionParser/ObjectDefinition.hpp
-    MissionParser/VariableMap.hpp
-    MissionParser/MissionLoaderText.hpp
+    mission/parser/Tokenizer.hpp
+    mission/parser/TokenTypes.inc
+    mission/parser/Parser.hpp
+    mission/parser/Statement.hpp
+    mission/parser/StatementKinds.inc
+    mission/parser/ObjectDefinition.hpp
+    mission/parser/VariableMap.hpp
+    mission/parser/MissionLoaderText.hpp
     mission/Mission.hpp
     LevelFile.hpp
 )

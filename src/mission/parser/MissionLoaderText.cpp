@@ -3,9 +3,9 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <MissionParser/Tokenizer.hpp>
-#include <MissionParser/Parser.hpp>
-#include <MissionParser/VariableMap.hpp>
+#include <mission/parser/Tokenizer.hpp>
+#include <mission/parser/Parser.hpp>
+#include <mission/parser/VariableMap.hpp>
 
 #define GET_VAR_MAP(object) \
     MissionParser::VariableMap variables; \
