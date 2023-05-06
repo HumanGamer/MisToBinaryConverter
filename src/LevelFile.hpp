@@ -2,7 +2,7 @@
 
 #include <platform/types.h>
 #include <core/streams/Stream.hpp>
-#include "Mission.hpp"
+#include <mission/Mission.hpp>
 
 class LevelFile
 {

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Mission.hpp"
+#include <mission/Mission.hpp>
 #include <MissionParser/MissionLoaderText.hpp>
 #include "LevelFile.hpp"
 
