@@ -63,3 +63,41 @@ std::string guidToString(const xg::Guid& guid)
         return "{INVALID_GUID}";
 }
 
+std::string cleanPath(const std::string& str)
+{
+    std::string result = str;
+
+    // replace \ with /
+    std::replace(result.begin(), result.end(), '\\', '/');
+
+    // remove ./ from the path if it starts with it
+    if (result.length() > 2 && result[0] == '.' && result[1] == '/')
+        result = result.substr(2);
+
+    // remove ~/ from the path if it starts with it
+    if (result.length() > 2 && result[0] == '~' && result[1] == '/')
+        result = result.substr(2);
+
+    // remove marble/ from the path if it starts with it
+    if (result.length() > 8 && result.substr(0, 8) == "marble/")
+        result = result.substr(8);
+
+    // remove data/missions/ from the path if it starts with it
+    if (result.length() > 15 && result.substr(0, 14) == "data/missions/")
+        result = result.substr(14);
+
+    return result;
+}
+
+bool containsIgnoreCase(const std::vector<std::string>& list, const std::string& str)
+{
+    return std::any_of(list.begin(), list.end(), [str](const std::string& s) { return equalsIgnoreCase(s, str); });
+
+//    for (const std::string& s : list)
+//    {
+//        if (equalsIgnoreCase(s, str))
+//            return true;
+//    }
+//
+//    return false;
+}
