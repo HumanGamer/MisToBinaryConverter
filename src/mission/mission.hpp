@@ -1,8 +1,8 @@
 #pragma once
 
 #include <platform/types.h>
-#include <core/Strings.hpp>
-#include <core/streams/Stream.hpp>
+#include <core/strings.hpp>
+#include <core/streams/stream.hpp>
 #include <string>
 #include <vector>
 #include <crossguid/guid.hpp>

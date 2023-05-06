@@ -3,7 +3,7 @@
 #include <platform/types.h>
 #include <fstream>
 #include <string>
-#include "Stream.hpp"
+#include "stream.hpp"
 
 class FileStream : public Stream
 {

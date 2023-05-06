@@ -1,4 +1,4 @@
-#include "VariableMap.hpp"
+#include "variableMap.hpp"
 #include <iostream>
 #include <utility>
 

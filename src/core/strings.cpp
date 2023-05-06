@@ -1,4 +1,4 @@
-#include "Strings.hpp"
+#include "strings.hpp"
 #include <iostream>
 
 LocalizedString::LocalizedString(std::string s)

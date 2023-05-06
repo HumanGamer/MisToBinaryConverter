@@ -9,14 +9,16 @@ namespace MissionParser
     enum TokenType
     {
 #define TOKEN_TYPE(name) name,
-#include "TokenTypes.inc"
+#include "tokenTypes.inc"
+
 #undef TOKEN_TYPE
     };
 
     static const char* sTokenTypeNames[] =
     {
 #define TOKEN_TYPE(name) #name,
-#include "TokenTypes.inc"
+#include "tokenTypes.inc"
+
 #undef TOKEN_TYPE
     };
 

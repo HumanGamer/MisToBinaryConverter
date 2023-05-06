@@ -1,11 +1,11 @@
-#include "MissionLoaderText.hpp"
-#include <core/Util.hpp>
+#include "textLoader.hpp"
+#include <core/util.hpp>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <mission/parser/Tokenizer.hpp>
-#include <mission/parser/Parser.hpp>
-#include <mission/parser/VariableMap.hpp>
+#include <mission/parser/tokenizer.hpp>
+#include <mission/parser/parser.hpp>
+#include <mission/parser/variableMap.hpp>
 
 #define GET_VAR_MAP(object) \
     MissionParser::VariableMap variables; \

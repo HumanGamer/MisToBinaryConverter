@@ -1,7 +1,7 @@
-#include "LevelFile.hpp"
-#include <core/streams/MemStream.hpp>
-#include <core/streams/FileStream.hpp>
-#include <core/Compression.hpp>
+#include "levelFile.hpp"
+#include <core/streams/memStream.hpp>
+#include <core/streams/fileStream.hpp>
+#include <core/compression.hpp>
 
 LevelFile::LevelFile()
 {

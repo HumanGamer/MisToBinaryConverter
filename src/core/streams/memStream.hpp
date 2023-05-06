@@ -1,7 +1,7 @@
 #pragma once
 
 #include <platform/types.h>
-#include "Stream.hpp"
+#include "stream.hpp"
 
 class MemStream : public Stream
 {

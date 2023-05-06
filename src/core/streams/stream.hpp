@@ -3,7 +3,7 @@
 #include <platform/types.h>
 #include <string>
 #include <vector>
-#include <core/Strings.hpp>
+#include <core/strings.hpp>
 
 class Stream
 {

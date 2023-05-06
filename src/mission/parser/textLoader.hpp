@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mission/Mission.hpp>
+#include <mission/mission.hpp>
 
 namespace MissionParser
 {

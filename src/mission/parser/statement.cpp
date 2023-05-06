@@ -1,4 +1,4 @@
-#include "Statement.hpp"
+#include "statement.hpp"
 #include <iostream>
 
 namespace MissionParser

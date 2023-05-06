@@ -1,7 +1,7 @@
-#include "Mission.hpp"
-#include <core/Compression.hpp>
-#include <core/streams/MemStream.hpp>
-#include <core/Util.hpp>
+#include "mission.hpp"
+#include <core/compression.hpp>
+#include <core/streams/memStream.hpp>
+#include <core/util.hpp>
 #include <iostream>
 #include <algorithm>
 

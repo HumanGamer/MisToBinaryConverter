@@ -1,8 +1,8 @@
 #pragma once
 
 #include <platform/types.h>
-#include <core/streams/Stream.hpp>
-#include <mission/Mission.hpp>
+#include <core/streams/stream.hpp>
+#include <mission/mission.hpp>
 
 class LevelFile
 {

@@ -1,5 +1,5 @@
-#include "ObjectDefinition.hpp"
-#include "VariableMap.hpp"
+#include "objectDefinition.hpp"
+#include "variableMap.hpp"
 #include <iostream>
 
 namespace MissionParser

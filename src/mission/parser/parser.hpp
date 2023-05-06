@@ -1,9 +1,9 @@
 #pragma once
 
 #include <platform/types.h>
-#include "Tokenizer.hpp"
-#include "Statement.hpp"
-#include "ObjectDefinition.hpp"
+#include "tokenizer.hpp"
+#include "statement.hpp"
+#include "objectDefinition.hpp"
 #include <optional>
 #include <string>
 #include <map>

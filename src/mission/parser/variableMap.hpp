@@ -1,10 +1,10 @@
 #pragma once
 
 #include <platform/types.h>
-#include <core/CaseInsensitiveMap.hpp>
+#include <core/caseInsensitiveMap.hpp>
 #include <string>
 #include <map>
-#include "ObjectDefinition.hpp"
+#include "objectDefinition.hpp"
 
 namespace MissionParser
 {

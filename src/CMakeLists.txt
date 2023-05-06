@@ -6,40 +6,40 @@ set(CMAKE_CXX_STANDARD 17)
 set(MAIN_SRC
     # Sources
     main.cpp
-    core/Strings.cpp
-    core/Util.cpp
-    core/streams/Stream.cpp
-    core/streams/FileStream.cpp
-    core/streams/MemStream.cpp
-    core/Compression.cpp
-    mission/parser/Tokenizer.cpp
-    mission/parser/Parser.cpp
-    mission/parser/Statement.cpp
-    mission/parser/ObjectDefinition.cpp
-    mission/parser/VariableMap.cpp
-    mission/parser/MissionLoaderText.cpp
-    mission/Mission.cpp
-    LevelFile.cpp
+    core/strings.cpp
+    core/util.cpp
+    core/streams/stream.cpp
+    core/streams/fileStream.cpp
+    core/streams/memStream.cpp
+    core/compression.cpp
+    mission/parser/tokenizer.cpp
+    mission/parser/parser.cpp
+    mission/parser/statement.cpp
+    mission/parser/objectDefinition.cpp
+    mission/parser/variableMap.cpp
+    mission/parser/textLoader.cpp
+    mission/mission.cpp
+    levelFile.cpp
 
     # Headers
     platform/types.h
-    core/Strings.hpp
-    core/Util.hpp
-    core/streams/Stream.hpp
-    core/streams/FileStream.hpp
-    core/streams/MemStream.hpp
-    core/CaseInsensitiveMap.hpp
-    core/Compression.hpp
-    mission/parser/Tokenizer.hpp
-    mission/parser/TokenTypes.inc
-    mission/parser/Parser.hpp
-    mission/parser/Statement.hpp
-    mission/parser/StatementKinds.inc
-    mission/parser/ObjectDefinition.hpp
-    mission/parser/VariableMap.hpp
-    mission/parser/MissionLoaderText.hpp
-    mission/Mission.hpp
-    LevelFile.hpp
+    core/strings.hpp
+    core/util.hpp
+    core/streams/stream.hpp
+    core/streams/fileStream.hpp
+    core/streams/memStream.hpp
+    core/caseInsensitiveMap.hpp
+    core/compression.hpp
+    mission/parser/tokenizer.hpp
+    mission/parser/tokenTypes.inc
+    mission/parser/parser.hpp
+    mission/parser/statement.hpp
+    mission/parser/statementKinds.inc
+    mission/parser/objectDefinition.hpp
+    mission/parser/variableMap.hpp
+    mission/parser/textLoader.hpp
+    mission/mission.hpp
+    levelFile.hpp
 )
 
 add_executable(MisToBinaryConverter ${MAIN_SRC})

@@ -1,4 +1,4 @@
-#include "MemStream.hpp"
+#include "memStream.hpp"
 
 MemStream::MemStream()
 {
