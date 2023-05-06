@@ -2,12 +2,14 @@
 
 #include <platform/types.h>
 #include <core/Strings.hpp>
+#include <core/streams/Stream.hpp>
 #include <string>
 #include <vector>
 #include <crossguid/guid.hpp>
 
-struct Mission
+class Mission
 {
+public:
     struct Info
     {
         LocalizedString name;
@@ -181,5 +183,12 @@ struct Mission
     };
     PreviewCamera previewCamera;
 
+public:
     void debugPrint();
+    bool write(Stream& stream, bool zlibCompression, bool valueCompression);
+
+private:
+
+    bool getBytes(std::vector<U8> &outData, bool valueCompression);
+    bool getCompressedBytes(std::vector<U8> &outData, bool valueCompression);
 };

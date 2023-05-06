@@ -26,8 +26,4 @@ protected:
 
 private:
     Mission* mMission;
-
-    bool GetMissionBytes(std::vector<U8> &outData, bool valueCompression);
-    bool GetCompressedMissionBytes(std::vector<U8> &outData, bool valueCompression);
-    bool WriteMission(Stream& stream, bool zlibCompression, bool valueCompression);
 };
