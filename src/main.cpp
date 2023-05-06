@@ -17,7 +17,7 @@ int main(int argc, const char** argv)
     std::cout << "Parsing file: " << fileName << std::endl;
 
     Mission mission;
-    if (!LoadMissionText(fileName, &mission))
+    if (!MissionParser::LoadMissionText(fileName, &mission))
     {
         std::cout << "Failed to parse file" << std::endl;
         return 1;
