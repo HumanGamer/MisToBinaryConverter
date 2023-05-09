@@ -20,6 +20,7 @@ set(MAIN_SRC
     mission/parser/variableMap.cpp
     mission/parser/textLoader.cpp
     interior/interiorResource.cpp
+    interior/interior.cpp
     levelFile.cpp
 
     # Headers
@@ -41,6 +42,7 @@ set(MAIN_SRC
     mission/parser/variableMap.hpp
     mission/parser/textLoader.hpp
     interior/interiorResource.hpp
+    interior/interior.hpp
     levelFile.hpp
 )
 
